@@ -2,223 +2,280 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dot Network</title>
   <style>
-    body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #121212; color: white; display: flex; flex-direction: column; align-items: center; }
-    header { background: #1e1e1e; padding: 15px; text-align: center; font-size: 24px; color: #00ffc3; font-weight: bold; width: 100%; }
-    nav { display: flex; justify-content: space-around; background: #1a1a1a; border-bottom: 1px solid #333; width: 100%; position: sticky; top: 0; }
-    nav button { flex: 1; padding: 12px; border: none; background: transparent; color: white; font-size: 16px; cursor: pointer; }
-    nav button.active { border-bottom: 3px solid #00ffc3; }
-    .tab { display: none; padding: 20px; max-width: 500px; width: 100%; }
-    .tab.active { display: block; }
-    .circle { width: 160px; height: 160px; border-radius: 50%; border: 5px dashed #00ffc3; display: flex; align-items: center; justify-content: center; margin: 20px auto; animation: spin 5s linear infinite; }
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-    button.main { padding: 12px 20px; background-color: #00ffc3; color: #000; font-weight: bold; border: none; border-radius: 8px; font-size: 16px; margin-top: 15px; display: block; margin-left: auto; margin-right: auto; }
-    select, input { padding: 10px; width: 100%; margin-bottom: 10px; border: none; border-radius: 6px; font-size: 16px; }
-    .share-buttons { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-    .share-buttons button { padding: 10px; border-radius: 6px; border: none; background-color: #00ffc3; color: black; font-weight: bold; cursor: pointer; flex: 1 1 45%; }
+    * { box-sizing: border-box; }
+    body, html {
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at center, #0f2027, #203a43, #2c5364);
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    header {
+      height: 70px;
+      background: #111;
+      color: #00ffc3;
+      font-weight: bold;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 -2px 6px rgba(0,255,195,0.3);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    nav {
+      position: fixed;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      background: #111;
+      box-shadow: 0 4px 10px rgba(0,255,195,0.3);
+      gap: 30px;
+      padding: 18px;
+      border-radius: 12px;
+      z-index: 20;
+    }
+    nav button {
+      background: #022222;
+      border: none;
+      color: #00ffc3;
+      font-size: 14px;
+      cursor: pointer;
+      width: 60px;
+      height: 48px;
+      border-radius: 12px;
+      box-shadow: 0 6px 10px rgba(0,255,195,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+    nav button.active,
+    nav button:hover {
+      background: #00ffc3;
+      color: #000;
+      box-shadow: 0 0 14px #00ffc3;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+    .tab {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.4s ease forwards;
+      width: 100%;
+    }
+    .tab.active {
+      display: flex;
+    }
+
+    .circle {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, #00ffc3, #005f4b);
+      box-shadow: inset 0 0 20px #00ffc3, 0 0 30px rgba(0,255,195,0.7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: black;
+      font-weight: bold;
+      font-size: 18px;
+      cursor: pointer;
+      animation: blink 1.5s infinite;
+      margin: 30px auto;
+      position: relative;
+    }
+
+    @keyframes blink {
+      0%, 100% { box-shadow: inset 0 0 20px #00ffc3, 0 0 20px rgba(0,255,195,0.6); }
+      50% { box-shadow: inset 0 0 30px #00ffc3, 0 0 40px rgba(0,255,195,0.9); }
+    }
+
+    #dotAmount {
+      font-size: 20px;
+      color: #fff;
+      position: absolute;
+      top: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+
+    #countdown {
+      font-size: 13px;
+      color: #000;
+    }
+
+    .share-buttons {
+      margin-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+    .share-buttons button {
+      flex: 1 1 40%;
+      min-width: 120px;
+      padding: 12px 10px;
+      border-radius: 16px;
+      border: none;
+      background: #00ffc3;
+      color: #000;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,255,195,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    .share-buttons button:hover {
+      background-color: #00cc99;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
   </style>
 </head>
 <body>
-  <header>Dot Network</header>
+  <header></div>.Dot Network</header>
+
   <nav>
     <button onclick="switchTab('home')" class="active">Home</button>
-    <button onclick="switchTab('referral')">Referral</button>
+    <button onclick="switchTab('referral')">Invite</button>
     <button onclick="switchTab('friends')">Friends</button>
     <button onclick="switchTab('about')">About</button>
   </nav>
 
-  <div id="home" class="tab active">
-    <h2 style="text-align:center;">Welcome, <span id="usernameDisplay"></span></h2>
-    <div class="circle"><span id="statusText">Mine Now</span></div>
-    <button class="main" id="mineBtn" onclick="startMining()">Start Mining</button>
-    <p id="countdown" style="text-align:center;">Not mining</p>
-    <p style="text-align:center;">Your Balance: <strong><span id="balance">0.00</span> DOT</strong></p>
-  </div>
+  <main>
+    <section id="home" class="tab active">
+      <div class="circle" id="circle" onclick="startMining()">
+        <div id="dotAmount">0.0000 DOT</div>
+        <div id="countdown">Tap to start mining</div>
+      </div>
+    </section>
 
-  <div id="referral" class="tab">
-    <h2>Your Referral Code</h2>
-    <p><strong id="refCode"></strong></p>
-    <input type="text" id="refInput" placeholder="Enter referral code" />
-    <button onclick="useReferral()">Submit</button>
-    <h3 style="margin-top:20px;">Invite Friends</h3>
-    <p>Share your code to earn bonus tokens:</p>
-    <div class="share-buttons">
-      <button onclick="shareWhatsApp()">📲 WhatsApp</button>
-      <button onclick="shareTelegram()">💬 Telegram</button>
-      <button onclick="shareFacebook()">🔵 Facebook</button>
-      <button onclick="shareEmail()">✉️ Email</button>
-      <button onclick="copyLink()">📋 Copy Link</button>
-    </div>
-  </div>
+    <section id="referral" class="tab">
+      <h2>Your Referral Link</h2>
+      <input type="text" readonly value="https://dotnetwork.app/invite?ref=YourCode" />
+      <div class="share-buttons">
+        <button onclick="shareLink('whatsapp')">WhatsApp</button>
+        <button onclick="shareLink('telegram')">Telegram</button>
+        <button onclick="shareLink('facebook')">Facebook</button>
+        <button onclick="shareLink('email')">Email</button>
+        <button onclick="copyLink()">Copy Link</button>
+      </div>
+    </section>
 
-  <div id="friends" class="tab">
-    <h2>Your Referred Friends</h2>
-    <ul id="friendList"></ul>
-  </div>
+    <section id="friends" class="tab">
+      <h2>Your Friends</h2>
+      <p>You have not referred anyone yet.</p>
+    </section>
 
-  <div id="about" class="tab">
-    <h2>About Dot Network</h2>
-    <p>This is a decentralized mining app inspired by Pi Network. You earn DOT tokens every 24 hours by tapping the button.</p>
-  </div>
+    <section id="about" class="tab">
+      <h2>About Dot Network</h2>
+      <p>This is a simulation mining app inspired by Pi Network.</p>
+    </section>
+  </main>
 
   <script>
-    const balanceKey = "dot_balance";
-    const miningKey = "dot_mining_time";
-    const reward = 0.25;
-    const interval = 24 * 60 * 60 * 1000;
-    const refKey = "dot_ref_code";
-    const usedRefKey = "dot_used_ref";
-    const friendsKey = "dot_friends";
-    const userKey = "dot_user";
-    const liveRewardRate = reward / interval;
-
-    if (!localStorage.getItem(userKey)) {
-      const name = prompt("Enter your name:");
-      if (name) localStorage.setItem(userKey, name);
-    }
-
-    const username = localStorage.getItem(userKey);
-    const myRefCode = username.toLowerCase().replace(/\s+/g, "") + "123";
-    document.getElementById("usernameDisplay").innerText = username;
-    document.getElementById("refCode").innerText = myRefCode;
-
-    function updateBalanceDisplay(value) {
-      document.getElementById("balance").innerText = value.toFixed(6);
-    }
-
-    function startMining() {
-      const now = Date.now();
-      localStorage.setItem(miningKey, now);
-      document.getElementById("mineBtn").disabled = true;
-      document.getElementById("statusText").innerText = "Mining...";
-      runCountdown(now + interval);
-      runLiveBalance(now);
-    }
-
-    function checkMining() {
-      const last = parseInt(localStorage.getItem(miningKey)) || 0;
-      const now = Date.now();
-      if (last && now < last + interval) {
-        document.getElementById("mineBtn").disabled = true;
-        document.getElementById("statusText").innerText = "Mining...";
-        runCountdown(last + interval);
-        runLiveBalance(last);
-      } else if (last) {
-        const bal = parseFloat(localStorage.getItem(balanceKey)) || 0;
-        localStorage.setItem(balanceKey, bal + reward);
-        localStorage.removeItem(miningKey);
-        updateBalanceDisplay(bal + reward);
-        document.getElementById("mineBtn").disabled = false;
-        document.getElementById("statusText").innerText = "Mine Now";
-        document.getElementById("countdown").innerText = "Done! Tap again.";
-      } else {
-        updateBalanceDisplay(parseFloat(localStorage.getItem(balanceKey)) || 0);
-      }
-    }
-
-    function runCountdown(end) {
-      const cd = document.getElementById("countdown");
-      const timer = setInterval(() => {
-        const now = Date.now();
-        const diff = end - now;
-        if (diff <= 0) {
-          clearInterval(timer);
-          checkMining();
-          return;
-        }
-        const h = Math.floor(diff / (1000 * 60 * 60));
-        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const s = Math.floor((diff % (1000 * 60)) / 1000);
-        cd.innerText = `Time left: ${h}h ${m}m ${s}s`;
-      }, 1000);
-    }
-
-    function runLiveBalance(startTime) {
-      const bal = parseFloat(localStorage.getItem(balanceKey)) || 0;
-      const start = startTime;
-      const intervalId = setInterval(() => {
-        const now = Date.now();
-        const elapsed = Math.min(now - start, interval);
-        const tempBalance = bal + elapsed * liveRewardRate;
-        updateBalanceDisplay(tempBalance);
-        if (elapsed >= interval) clearInterval(intervalId);
-      }, 1000);
-    }
-
     function switchTab(tabId) {
       document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
       document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
-      const index = ['home', 'referral', 'friends', 'about'].indexOf(tabId);
-      document.querySelectorAll('nav button')[index].classList.add('active');
+      document.getElementById('btn-' + tabId).classList.add('active');
     }
 
-    function useReferral() {
-      const input = document.getElementById("refInput").value.trim();
-      if (!input || localStorage.getItem(usedRefKey)) return alert("Referral already used or empty.");
-      if (input !== myRefCode) {
-        localStorage.setItem(usedRefKey, input);
-        let friends = JSON.parse(localStorage.getItem(friendsKey)) || [];
-        friends.push(input);
-        localStorage.setItem(friendsKey, JSON.stringify(friends));
-        alert("Referral applied!");
-      } else {
-        alert("You cannot use your own referral code.");
+    let mining = false;
+    let dotBalance = parseFloat(localStorage.getItem('dotBalance')) || 0;
+    let startTime = parseInt(localStorage.getItem('startTime')) || null;
+    const miningRatePerSecond = 0.000003;
+
+   function updateMining() {
+  if (startTime) {
+    const now = Date.now();
+    const elapsed = Math.floor((now - startTime) / 1000);
+    if (elapsed < 86400) {
+      const newBalance = elapsed * miningRatePerSecond;
+      dotBalance = newBalance;
+      localStorage.setItem('dotBalance', dotBalance.toFixed(6));
+      document.getElementById('dotAmount').innerText = dotBalance.toFixed(6) + ' DOT';
+      document.getElementById('countdown').innerText = formatTime(86400 - elapsed);
+    } else {
+      document.getElementById('countdown').innerText = 'Tap to start mining';
+      mining = false;
+      startTime = null;
+      localStorage.removeItem('startTime');
+      clearInterval(timer);
+    }
+  }
+}
+
+function startMining() {
+  if (!startTime) {
+    startTime = Date.now();
+    localStorage.setItem('startTime', startTime);
+  }
+  mining = true;
+  timer = setInterval(updateMining, 1000);
+}
+
+
+    function formatTime(sec) {
+      const h = Math.floor(sec / 3600);
+      const m = Math.floor((sec % 3600) / 60);
+      const s = sec % 60;
+      return `${h}h ${m}m ${s}s remaining`;
+    }
+
+    function shareLink(platform) {
+      const url = encodeURIComponent('https://dotnetwork.app/invite?ref=YourCode');
+      let fullURL = '';
+      switch(platform) {
+        case 'whatsapp': fullURL = `https://wa.me/?text=${url}`; break;
+        case 'telegram': fullURL = `https://t.me/share/url?url=${url}`; break;
+        case 'facebook': fullURL = `https://www.facebook.com/sharer/sharer.php?u=${url}`; break;
+        case 'email': fullURL = `mailto:?subject=Join Dot Network&body=${url}`; break;
       }
-    }
-
-    function loadFriends() {
-      const list = document.getElementById("friendList");
-      list.innerHTML = "";
-      const friends = JSON.parse(localStorage.getItem(friendsKey)) || [];
-      if (friends.length === 0) list.innerHTML = "<li>No friends invited yet.</li>";
-      friends.forEach(f => {
-        const li = document.createElement("li");
-        li.innerText = f;
-        list.appendChild(li);
-      });
-    }
-
-    function generateShareMessage() {
-      const username = localStorage.getItem("dot_user");
-      const code = username.toLowerCase().replace(/\s+/g, "") + "123";
-      const msg = `Join me on Dot Network & start mining free tokens!\nUse my referral code: ${code}\n👉 https://dot.network/join?ref=${code}`;
-      return encodeURIComponent(msg);
-    }
-
-    function shareWhatsApp() {
-      const msg = generateShareMessage();
-      window.open(`https://wa.me/?text=${msg}`, '_blank');
-    }
-
-    function shareTelegram() {
-      const msg = generateShareMessage();
-      window.open(`https://t.me/share/url?url=${msg}`, '_blank');
-    }
-
-    function shareFacebook() {
-      const msg = generateShareMessage();
-      window.open(`https://www.facebook.com/sharer/sharer.php?u=https://dot.network/join?ref=${msg}`, '_blank');
-    }
-
-    function shareEmail() {
-      const msg = decodeURIComponent(generateShareMessage());
-      window.location.href = `mailto:?subject=Join Dot Network&body=${msg}`;
+      window.open(fullURL, '_blank');
     }
 
     function copyLink() {
-      const username = localStorage.getItem("dot_user");
-      const code = username.toLowerCase().replace(/\s+/g, "") + "123";
-      const link = `https://dot.network/join?ref=${code}`;
-      navigator.clipboard.writeText(link).then(() => {
-        alert("Referral link copied to clipboard!");
-      });
+      navigator.clipboard.writeText('https://dotnetwork.app/invite?ref=YourCode');
+      alert('Link copied!');
     }
 
-    checkMining();
-    loadFriends();
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('dotAmount').innerText = dotBalance.toFixed(6) + ' DOT';
+      if (localStorage.getItem('startTime')) {
+        startMining();
+      }
+    });
   </script>
 </body>
 </html>
