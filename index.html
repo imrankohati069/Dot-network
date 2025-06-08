@@ -1,283 +1,283 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dot Network</title>
-  <style>
-    * { box-sizing: border-box; }
-    body, html {
-      margin: 0; padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: radial-gradient(circle at center, #0f2027, #203a43, #2c5364);
-      color: white;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dot Network</title>
+  <style>
+    * { box-sizing: border-box; }
+    body, html {
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at center, #0f2027, #203a43, #2c5364);
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-    header {
-      height: 70px;
-      background: #111;
-      color: #00ffc3;
-      font-weight: bold;
-      font-size: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: inset 0 -2px 6px rgba(0,255,195,0.3);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
+    header {
+      height: 70px;
+      background: #111;
+      color: #00ffc3;
+      font-weight: bold;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 -2px 6px rgba(0,255,195,0.3);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background: #111;
+  box-shadow: 0 -2px 10px rgba(0,255,195,0.3);
+  padding: 10px 0;
+  z-index: 20;
+}
+nav button {
+  margin: 0 8px;
+}
 
-    nav {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      background: #111;
-      box-shadow: 0 -2px 10px rgba(0,255,195,0.3);
-      padding: 10px 0;
-      z-index: 20;
-    }
+  
+    nav button {
+      background: #022222;
+      border: none;
+      color: #00ffc3;
+      font-size: 12px;
+      cursor: pointer;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      box-shadow: 0 6px 10px rgba(0,255,195,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+    nav button.active,
+    nav button:hover {
+      background: #00ffc3;
+      color: #000;
+      box-shadow: 0 0 14px #00ffc3;
+    }
 
-    nav button {
-      margin: 0 8px;
-      background: #022222;
-      border: none;
-      color: #00ffc3;
-      font-size: 12px;
-      cursor: pointer;
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      box-shadow: 0 6px 10px rgba(0,255,195,0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background-color 0.3s, box-shadow 0.3s;
-    }
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+    .tab {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.4s ease forwards;
+      width: 100%;
+    }
+    .tab.active {
+      display: flex;
+    }
 
-    nav button.active,
-    nav button:hover {
-      background: #00ffc3;
-      color: #000;
-      box-shadow: 0 0 14px #00ffc3;
-    }
+    .circle {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, #00ffc3, #005f4b);
+      box-shadow: inset 0 0 20px #00ffc3, 0 0 30px rgba(0,255,195,0.7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: black;
+      font-weight: bold;
+      font-size: 18px;
+      cursor: pointer;
+      animation: blink 1.5s infinite;
+      margin: 30px auto;
+      position: relative;
+    }
 
-    main {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
-    }
+    @keyframes blink {
+      0%, 100% { box-shadow: inset 0 0 20px #00ffc3, 0 0 20px rgba(0,255,195,0.6); }
+      50% { box-shadow: inset 0 0 30px #00ffc3, 0 0 40px rgba(0,255,195,0.9); }
+    }
 
-    .tab {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      animation: fadeIn 0.4s ease forwards;
-      width: 100%;
-    }
+    #dotAmount {
+      font-size: 20px;
+      color: #fff;
+      position: absolute;
+      top: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
 
-    .tab.active {
-      display: flex;
-    }
+    #countdown {
+      font-size: 13px;
+      color: #000;
+    }
 
-    .circle {
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-      background: radial-gradient(circle at center, #00ffc3, #005f4b);
-      box-shadow: inset 0 0 20px #00ffc3, 0 0 30px rgba(0,255,195,0.7);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: black;
-      font-weight: bold;
-      font-size: 18px;
-      cursor: pointer;
-      animation: blink 1.5s infinite;
-      margin: 30px auto;
-      position: relative;
-    }
+    .share-buttons {
+      margin-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+    .share-buttons button {
+      flex: 1 1 40%;
+      min-width: 120px;
+      padding: 12px 10px;
+      border-radius: 16px;
+      border: none;
+      background: #00ffc3;
+      color: #000;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,255,195,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    .share-buttons button:hover {
+      background-color: #00cc99;
+    }
 
-    @keyframes blink {
-      0%, 100% { box-shadow: inset 0 0 20px #00ffc3, 0 0 20px rgba(0,255,195,0.6); }
-      50% { box-shadow: inset 0 0 30px #00ffc3, 0 0 40px rgba(0,255,195,0.9); }
-    }
-
-    #countdown {
-      font-size: 13px;
-      color: #000;
-    }
-
-    .share-buttons {
-      margin-top: 24px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
-    }
-
-    .share-buttons button {
-      flex: 1 1 40%;
-      min-width: 120px;
-      padding: 12px 10px;
-      border-radius: 16px;
-      border: none;
-      background: #00ffc3;
-      color: #000;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 5px 15px rgba(0,255,195,0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: background-color 0.3s ease;
-      user-select: none;
-    }
-
-    .share-buttons button:hover {
-      background-color: #00cc99;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-  </style>
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <div id="dotAmount">0.000000 DOT</div>
-  </header>
+  <header></div>.Dot Network</header>
 
-  <nav>
-    <button onclick="switchTab('home')" class="active">Home</button>
-    <button onclick="switchTab('referral')">Invite</button>
-    <button onclick="switchTab('friends')">Friends</button>
-    <button onclick="switchTab('about')">About</button>
-  </nav>
+  <nav>
+    <button onclick="switchTab('home')" class="active">Home</button>
+    <button onclick="switchTab('referral')">Invite</button>
+    <button onclick="switchTab('friends')">Friends</button>
+    <button onclick="switchTab('about')">About</button>
+  </nav>
 
-  <main>
-    <section id="home" class="tab active">
-      <div class="circle" id="circle" onclick="startMining()">
-        <div style="font-size: 22px;">.Dot Network</div>
-        <div id="countdown">Tap to start mining</div>
-      </div>
-    </section>
+  <main>
+    <section id="home" class="tab active">
+      <div class="circle" id="circle" onclick="startMining()">
+        <div id="dotAmount">0.0000 DOT</div>
+        <div id="countdown">Tap to start mining</div>
+      </div>
+    </section>
 
-    <section id="referral" class="tab">
-      <h2>Your Referral Link</h2>
-      <input type="text" readonly value="https://dotnetwork.app/invite?ref=YourCode" />
-      <div class="share-buttons">
-        <button onclick="shareLink('whatsapp')">WhatsApp</button>
-        <button onclick="shareLink('telegram')">Telegram</button>
-        <button onclick="shareLink('facebook')">Facebook</button>
-        <button onclick="shareLink('email')">Email</button>
-        <button onclick="copyLink()">Copy Link</button>
-      </div>
-    </section>
+    <section id="referral" class="tab">
+      <h2>Your Referral Link</h2>
+      <input type="text" readonly value="https://dotnetwork.app/invite?ref=YourCode" />
+      <div class="share-buttons">
+        <button onclick="shareLink('whatsapp')">WhatsApp</button>
+        <button onclick="shareLink('telegram')">Telegram</button>
+        <button onclick="shareLink('facebook')">Facebook</button>
+        <button onclick="shareLink('email')">Email</button>
+        <button onclick="copyLink()">Copy Link</button>
+      </div>
+    </section>
 
-    <section id="friends" class="tab">
-      <h2>Your Friends</h2>
-      <p>You have not referred anyone yet.</p>
-    </section>
+    <section id="friends" class="tab">
+      <h2>Your Friends</h2>
+      <p>You have not referred anyone yet.</p>
+    </section>
 
-    <section id="about" class="tab">
-      <h2>About Dot Network</h2>
-      <p>Dot Network is a next-generation decentralized app where users can mine crypto for free — no investment required. It also features a built-in decentralized exchange (DEX) that lets you trade your digital assets securely and seamlessly. With a focus on simplicity, security, and rewards, Dot Network is redefining how everyday users connect with the crypto world.</p>
-    </section>
-  </main>
+    <section id="about" class="tab">
+      <h2>About Dot Network</h2>
+      <p>Dot Network is a next-generation decentralized app where users can mine crypto for free — no investment required. It also features a built-in decentralized exchange (DEX) that lets you trade your digital assets securely and seamlessly. With a focus on simplicity, security, and rewards, Dot Network is redefining how everyday users connect with the crypto world.</p>
+    </section>
+  </main>
 
-  <script>
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-      document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
-      document.querySelector(`nav button[onclick*="${tabId}"]`).classList.add('active');
-      document.getElementById(tabId).classList.add('active');
-    }
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      document.getElementById('btn-' + tabId).classList.add('active');
+    }
 
-    let mining = false;
-    let timer;
-    const miningRatePerSecond = 0.000003;
-    let dotBalance = parseFloat(localStorage.getItem('dotBalance')) || 0;
-    let startTime = parseInt(localStorage.getItem('startTime')) || null;
+    let mining = false;
+    let dotBalance = parseFloat(localStorage.getItem('dotBalance')) || 0;
+    let startTime = parseInt(localStorage.getItem('startTime')) || null;
+    const miningRatePerSecond = 0.000003;
 
-    function updateMining() {
-      if (startTime) {
-        const now = Date.now();
-        const elapsed = Math.floor((now - startTime) / 1000);
-        const earned = elapsed * miningRatePerSecond;
-        const total = dotBalance + earned;
+   function updateMining() {
+  if (startTime) {
+    const now = Date.now();
+    const elapsed = Math.floor((now - startTime) / 1000);
+    if (elapsed < 86400) {
+      const newBalance = elapsed * miningRatePerSecond;
+      dotBalance = newBalance;
+      localStorage.setItem('dotBalance', dotBalance.toFixed(6));
+      document.getElementById('dotAmount').innerText = dotBalance.toFixed(6) + ' DOT';
+      document.getElementById('countdown').innerText = formatTime(86400 - elapsed);
+    } else {
+      document.getElementById('countdown').innerText = 'Tap to start mining';
+      mining = false;
+      startTime = null;
+      localStorage.removeItem('startTime');
+      clearInterval(timer);
+    }
+  }
+}
 
-        document.getElementById('dotAmount').innerText = total.toFixed(6) + ' DOT';
-        document.getElementById('countdown').innerText = formatTime(86400 - elapsed);
+function startMining() {
+  if (!startTime) {
+    startTime = Date.now();
+    localStorage.setItem('startTime', startTime);
+  }
+  mining = true;
+  timer = setInterval(updateMining, 1000);
+}
 
-        if (elapsed >= 86400) {
-          clearInterval(timer);
-          mining = false;
-          startTime = null;
-          localStorage.removeItem('startTime');
-          localStorage.setItem('dotBalance', total.toFixed(6));
-          dotBalance = total;
-          document.getElementById('countdown').innerText = 'Tap to start mining';
-        }
-      }
-    }
 
-    function startMining() {
-      if (!startTime) {
-        startTime = Date.now();
-        localStorage.setItem('startTime', startTime);
-      }
-      mining = true;
-      clearInterval(timer);
-      timer = setInterval(updateMining, 1000);
-    }
+    function formatTime(sec) {
+      const h = Math.floor(sec / 3600);
+      const m = Math.floor((sec % 3600) / 60);
+      const s = sec % 60;
+      return `${h}h ${m}m ${s}s remaining`;
+    }
 
-    function formatTime(sec) {
-      const h = Math.floor(sec / 3600);
-      const m = Math.floor((sec % 3600) / 60);
-      const s = sec % 60;
-      return `${h}h ${m}m ${s}s remaining`;
-    }
+    function shareLink(platform) {
+      const url = encodeURIComponent('https://dotnetwork.app/invite?ref=YourCode');
+      let fullURL = '';
+      switch(platform) {
+        case 'whatsapp': fullURL = `https://wa.me/?text=${url}`; break;
+        case 'telegram': fullURL = `https://t.me/share/url?url=${url}`; break;
+        case 'facebook': fullURL = `https://www.facebook.com/sharer/sharer.php?u=${url}`; break;
+        case 'email': fullURL = `mailto:?subject=Join Dot Network&body=${url}`; break;
+      }
+      window.open(fullURL, '_blank');
+    }
 
-    function shareLink(platform) {
-      const url = encodeURIComponent('https://dotnetwork.app/invite?ref=YourCode');
-      let fullURL = '';
-      switch(platform) {
-        case 'whatsapp': fullURL = `https://wa.me/?text=${url}`; break;
-        case 'telegram': fullURL = `https://t.me/share/url?url=${url}`; break;
-        case 'facebook': fullURL = `https://www.facebook.com/sharer/sharer.php?u=${url}`; break;
-        case 'email': fullURL = `mailto:?subject=Join Dot Network&body=${url}`; break;
-      }
-      window.open(fullURL, '_blank');
-    }
+    function copyLink() {
+      navigator.clipboard.writeText('https://dotnetwork.app/invite?ref=YourCode');
+      alert('Link copied!');
+    }
 
-    function copyLink() {
-      navigator.clipboard.writeText('https://dotnetwork.app/invite?ref=YourCode');
-      alert('Link copied!');
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      const storedBalance = parseFloat(localStorage.getItem('dotBalance')) || 0;
-      document.getElementById('dotAmount').innerText = storedBalance.toFixed(6) + ' DOT';
-      if (localStorage.getItem('startTime')) {
-        startMining();
-      }
-    });
-  </script>
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('dotAmount').innerText = dotBalance.toFixed(6) + ' DOT';
+      if (localStorage.getItem('startTime')) {
+        startMining();
+      }
+    });
+  </script>
 </body>
 </html>
-
