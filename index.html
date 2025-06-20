@@ -97,7 +97,7 @@
       text-align: center;
       padding: 20px;
       flex-direction: column;
-      margin-bottom: 70px; /* to avoid nav overlap */
+      margin-bottom: 70px;
       overflow-y: auto;
       height: calc(100vh - 70px);
     }
@@ -208,7 +208,7 @@
       transform-style: preserve-3d;
     }
 
-    /* Countdown flip digits - FIXED POSITIONING */
+    /* Countdown flip digits */
     #countdownFlip {
       font-size: 28px;
       color: #000;
@@ -300,6 +300,26 @@
     .toast.show {
       opacity: 1;
     }
+
+    /* Bonus notification */
+    .bonus-notification {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,153,0,0.9);
+      color: black;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      z-index: 100;
+      opacity: 0;
+      transition: opacity 0.3s, top 0.5s;
+    }
+    .bonus-notification.show {
+      opacity: 1;
+      top: 30px;
+    }
   </style>
 </head>
 <body>
@@ -311,6 +331,7 @@
   </div>
 
   <div class="toast" id="toast">Link copied!</div>
+  <div class="bonus-notification" id="bonusNotification">+1 DOT Referral Bonus!</div>
 
   <nav>
     <button onclick="switchTab('home')" class="active">Home</button>
@@ -337,7 +358,7 @@
 
     <section id="referral" class="tab">
       <h2>Your Referral Link</h2>
-      <span id="referralLinkText" title="Click to copy">https://dotnetwork.app/invite?ref=YourCode</span>
+      <span id="referralLinkText" title="Click to copy">https://dotnetwork.app/invite?ref=Loading...</span>
       <div class="share-buttons">
         <button onclick="shareLink('whatsapp')">WhatsApp</button>
         <button onclick="shareLink('telegram')">Telegram</button>
@@ -346,16 +367,17 @@
         <button onclick="copyLink()">Copy Link</button>
       </div>
       <p>Total Referrals: <span id="referralCount">0</span></p>
+      <p>Referral Bonus: <span id="referralBonus">0</span> DOT</p>
     </section>
 
     <section id="whitepaper" class="tab">
       <h2>Dot Network - Whitepaper</h2>
       <p><strong>Introduction</strong><br>Dot Network is a decentralized, community-driven platform that allows everyday users to earn tokens directly from their mobile phones without the need for expensive mining hardware.</p>
       <p><strong>Mission Statement</strong><br>Empowering everyday users to participate in the future of digital currency through simple actions and community engagement.</p>
-      <p><strong>How It Works</strong><br>- Users install the app<br>- Tap the "Start Earning" button<br>- A 24-hour timer runs, rewarding tokens<br>- Users earn extra tokens per referral<br>- Daily check-ins maintain mining status</p>
+      <p><strong>How It Works</strong><br>- Users install the app<br>- Tap the "Start Earning" button<br>- A 24-hour timer runs, rewarding tokens<br>- Users earn 1 DOT token per referral<br>- Daily check-ins maintain mining status</p>
       <p><strong>Technology</strong><br>Dot Network is mobile-first and utilizes Firebase for backend services. The system is Web3-ready for future smart contract integration.</p>
       <p><strong>Tokenomics</strong><br>Total Supply: 1 billion<br>Community Airdrop: 60% (Daily unlock)<br>Marketing: 10%<br>Team: 10%<br>Liquidity Pool: 10%<br>Reserve: 10%</p>
-      <p><strong>Referral Model</strong><br>Users earn bonus tokens for each active referral. Anti-bot and fraud detection systems ensure genuine rewards.</p>
+      <p><strong>Referral Model</strong><br>Users earn 1 DOT token for each active referral. Bonus is awarded only when referred user completes registration.</p>
       <p><strong>Roadmap</strong><br>Q3 2025: App Launch<br>Q4 2025: User Growth<br>Q1 2026: Token Deployment<br>Q2 2026: Wallet Integration<br>Q3 2026: Exchange Listings</p>
       <p><strong>Vision</strong><br>Bringing blockchain to every mobile user simply and securely.</p>
     </section>
@@ -367,29 +389,51 @@
   </main>
 
   <script>
-    // Splash screen removal after 4 seconds
-    window.addEventListener('DOMContentLoaded', () => {
-      setTimeout(() => {
-        const splash = document.getElementById('splashScreen');
-        splash.style.opacity = '0';
-        setTimeout(() => splash.style.display = 'none', 500);
-      }, 4000);
+    // Generate a random 6-character referral code
+    function generateReferralCode() {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Avoid confusing characters
+      let result = '';
+      for (let i = 0; i < 6; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
+    }
 
-      updateTokenDisplay();
-      if(localStorage.getItem('startTime')) startMining();
-      else updateCountdownDisplay(86400);
+    // Get the user's referral link
+    function getReferralLink() {
+      const code = localStorage.getItem('referralCode') || 'YourCode';
+      return `https://dotnetwork.app/invite?ref=${code}`;
+    }
 
-      const referralCount = parseInt(localStorage.getItem('referralCount')) || 0;
-      document.getElementById('referralCount').innerText = referralCount;
+    // Initialize all data with proper defaults
+    function initData() {
+      if (localStorage.getItem('initialized') !== 'true') {
+        localStorage.setItem('dotBalance', '0');
+        localStorage.setItem('baseBalance', '0');
+        localStorage.setItem('referralCount', '0');
+        localStorage.setItem('referralBonus', '0');
+        localStorage.setItem('currentTab', 'home');
+        
+        // Generate and store unique referral code if not exists
+        if (!localStorage.getItem('referralCode')) {
+          localStorage.setItem('referralCode', generateReferralCode());
+        }
+        
+        localStorage.setItem('initialized', 'true');
+      }
+    }
 
-      // Referral link copy on click
+    // Update all referral displays
+    function updateReferralDisplay() {
       const referralLinkText = document.getElementById('referralLinkText');
-      referralLinkText.addEventListener('click', () => {
-        copyToClipboard(referralLinkText.textContent, 'Link copied!');
-        referralLinkText.classList.add('copied');
-        setTimeout(() => referralLinkText.classList.remove('copied'), 1500);
-      });
-    });
+      referralLinkText.textContent = getReferralLink();
+      
+      const refCount = localStorage.getItem('referralCount') || '0';
+      const refBonus = localStorage.getItem('referralBonus') || '0';
+      
+      document.getElementById('referralCount').textContent = refCount;
+      document.getElementById('referralBonus').textContent = refBonus;
+    }
 
     // Show toast notification
     function showToast(message) {
@@ -397,6 +441,13 @@
       toast.textContent = message;
       toast.classList.add('show');
       setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    // Show bonus notification
+    function showBonusNotification() {
+      const bonus = document.getElementById('bonusNotification');
+      bonus.classList.add('show');
+      setTimeout(() => bonus.classList.remove('show'), 3000);
     }
 
     // Improved clipboard function
@@ -420,34 +471,48 @@
       }
     }
 
-    // Navigation tabs
-    function switchTab(tabId) {
+    // Update all displays at once
+    function updateAllDisplays() {
+      // Calculate total balance (base + bonus)
+      const baseBalance = parseFloat(localStorage.getItem('baseBalance')) || 0;
+      const referralBonus = parseFloat(localStorage.getItem('referralBonus')) || 0;
+      const totalBalance = baseBalance + referralBonus;
+      localStorage.setItem('dotBalance', totalBalance.toFixed(6));
+      
+      updateTokenDisplay();
+      updateReferralDisplay();
+    }
+
+    // Navigation tabs with persistence
+    function switchTab(tabId, updateStorage = true) {
       document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
       document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
+      
+      const activeBtn = document.querySelector(`nav button[onclick*="${tabId}"]`);
+      if (activeBtn) activeBtn.classList.add('active');
+      
+      if(updateStorage) {
+        localStorage.setItem('currentTab', tabId);
+      }
     }
 
-    // Mining timer and tokens
-    let mining = false;
-    let dotBalance = parseFloat(localStorage.getItem('dotBalance')) || 0;
-    let startTime = parseInt(localStorage.getItem('startTime')) || null;
-    const miningDuration = 86400; // 24 hours in seconds
-    const miningRatePerSecond = 0.00006;
-    let timer = null;
-
+    // Create flip animation for numbers
     function createFlipDigits(str) {
       return str.split('').map(ch => {
         return `<span class="flip-digit"><span class="digit-inner">${ch}</span></span>`;
       }).join('');
     }
 
+    // Update token display with flip animation
     function updateTokenDisplay() {
-      const fixedBalance = dotBalance.toFixed(6);
+      const balance = parseFloat(localStorage.getItem('dotBalance')) || 0;
+      const fixedBalance = balance.toFixed(6);
       const tokenHeader = document.getElementById('tokenHeader');
       tokenHeader.innerHTML = createFlipDigits(fixedBalance);
     }
 
+    // Convert seconds to HH:MM:SS format
     function secondsToHMS(sec) {
       const h = Math.floor(sec / 3600).toString().padStart(2,'0');
       const m = Math.floor((sec % 3600) / 60).toString().padStart(2,'0');
@@ -455,6 +520,7 @@
       return `${h}:${m}:${s}`;
     }
 
+    // Update countdown display
     function updateCountdownDisplay(secondsLeft) {
       const countdownDiv = document.getElementById('countdownFlip');
       countdownDiv.innerHTML = secondsToHMS(secondsLeft).split('').map(ch => {
@@ -463,19 +529,30 @@
       }).join('');
     }
 
+    // Mining system
+    let mining = false;
+    let timer = null;
+    const miningDuration = 86400; // 24 hours in seconds
+    const miningRatePerSecond = 0.00006;
+
     function updateMining() {
+      const startTime = parseInt(localStorage.getItem('startTime'));
       if (!startTime) return;
+      
       const now = Date.now();
       const elapsed = Math.floor((now - startTime) / 1000);
+      
       if (elapsed < miningDuration) {
         const secondsLeft = miningDuration - elapsed;
-        dotBalance += miningRatePerSecond;
-        localStorage.setItem('dotBalance', dotBalance.toFixed(6));
-        updateTokenDisplay();
+        
+        // Update only base balance during mining
+        const baseBalance = parseFloat(localStorage.getItem('baseBalance')) + miningRatePerSecond;
+        localStorage.setItem('baseBalance', baseBalance.toFixed(6));
+        
+        updateAllDisplays();
         updateCountdownDisplay(secondsLeft);
       } else {
         mining = false;
-        startTime = null;
         localStorage.removeItem('startTime');
         clearInterval(timer);
         document.getElementById('flipCard').classList.add('flipped');
@@ -483,44 +560,102 @@
       }
     }
 
-    function startMining() {
-      if (!startTime) {
-        startTime = Date.now();
-        localStorage.setItem('startTime', startTime);
+    function startMining(flipCard = true) {
+      if (!localStorage.getItem('startTime')) {
+        localStorage.setItem('startTime', Date.now());
       }
       if (!mining) {
         mining = true;
         timer = setInterval(updateMining, 1000);
         updateMining();
+        if(flipCard) {
+          document.getElementById('flipCard').classList.remove('flipped');
+        }
       }
     }
 
     // Share buttons with mobile app support
     function shareLink(platform) {
-      const referralUrl = encodeURIComponent('https://dotnetwork.app/invite?ref=YourCode');
+      const referralUrl = encodeURIComponent(getReferralLink());
+      const userCode = localStorage.getItem('referralCode') || 'YourCode';
+      const shareText = encodeURIComponent(`Join me on Dot Network! Use my code: ${userCode}`);
+      
       let shareUrl = '';
-      const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
-
       switch(platform) {
         case 'whatsapp':
-          shareUrl = isMobile ? `whatsapp://send?text=${referralUrl}` : `https://wa.me/?text=${referralUrl}`;
+          shareUrl = `https://wa.me/?text=${shareText}%20${referralUrl}`;
           break;
         case 'telegram':
-          shareUrl = isMobile ? `tg://msg_url?url=${referralUrl}` : `https://t.me/share/url?url=${referralUrl}`;
+          shareUrl = `https://t.me/share/url?url=${referralUrl}&text=${shareText}`;
           break;
         case 'facebook':
           shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${referralUrl}`;
           break;
         case 'email':
-          shareUrl = `mailto:?subject=Join Dot Network&body=${referralUrl}`;
+          shareUrl = `mailto:?subject=Join%20Dot%20Network&body=${shareText}%0A%0A${referralUrl}`;
           break;
       }
+      
       window.open(shareUrl, '_blank');
+      showToast("Shared! Earn 1 DOT when someone joins");
     }
 
     function copyLink() {
-      copyToClipboard('https://dotnetwork.app/invite?ref=YourCode');
+      copyToClipboard(getReferralLink());
+      showToast("Link copied! Earn 1 DOT when someone joins");
     }
+
+    // This function should be called from your backend when someone actually registers
+    function addReferralBonus() {
+      let refCount = parseInt(localStorage.getItem('referralCount')) || 0;
+      refCount++;
+      localStorage.setItem('referralCount', refCount);
+      
+      // Add 1 DOT to main balance
+      let currentBalance = parseFloat(localStorage.getItem('dotBalance')) || 0;
+      currentBalance += 1;
+      localStorage.setItem('dotBalance', currentBalance.toFixed(6));
+      localStorage.setItem('referralBonus', currentBalance.toFixed(6));
+      
+      updateAllDisplays();
+      showBonusNotification();
+    }
+
+    // Splash screen removal and initial setup
+    window.addEventListener('DOMContentLoaded', () => {
+      initData();
+      
+      // Set current tab from localStorage
+      const currentTab = localStorage.getItem('currentTab') || 'home';
+      switchTab(currentTab, false);
+      document.querySelector(`nav button[onclick*="${currentTab}"]`).classList.add('active');
+      
+      setTimeout(() => {
+        const splash = document.getElementById('splashScreen');
+        splash.style.opacity = '0';
+        setTimeout(() => splash.style.display = 'none', 500);
+      }, 4000);
+
+      // Initialize all displays
+      updateAllDisplays();
+      
+      if(localStorage.getItem('startTime')) {
+        startMining(false); // Resume mining without flipping card
+      } else {
+        updateCountdownDisplay(86400);
+      }
+
+      // Referral link copy on click
+      const referralLinkText = document.getElementById('referralLinkText');
+      referralLinkText.addEventListener('click', () => {
+        copyToClipboard(referralLinkText.textContent, 'Link copied! Earn 1 DOT when someone joins');
+        referralLinkText.classList.add('copied');
+        setTimeout(() => referralLinkText.classList.remove('copied'), 1500);
+      });
+    });
+
+    // For testing purposes only - simulate a referral
+    // window.simulateReferral = addReferralBonus;
   </script>
 </body>
 </html>
