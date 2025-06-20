@@ -9,14 +9,49 @@
     body, html {
       margin: 0; padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: radial-gradient(circle at center, #0f2027, #203a43, #2c5364);
-      color: white;
+      background: linear-gradient(145deg, #1a1a1a, #3a1f0f);
+      color: #fff;
       height: 100vh;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
     }
 
+    /* Splash screen */
+    #splashScreen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(145deg, #1a1a1a, #3a1f0f);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: bold;
+      color: #ff9900;
+      z-index: 9999;
+    }
+    #loadingBarContainer {
+      margin-top: 20px;
+      width: 200px;
+      height: 10px;
+      background: #330000;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    #loadingBar {
+      width: 0%;
+      height: 100%;
+      background: #ff9900;
+      animation: loadingAnim 4s linear forwards;
+      border-radius: 12px;
+    }
+    @keyframes loadingAnim {
+      to { width: 100%; }
+    }
+
+    /* Navigation */
     nav {
       position: fixed;
       bottom: 0;
@@ -24,32 +59,34 @@
       display: flex;
       justify-content: center;
       background: #111;
-      box-shadow: 0 -2px 10px rgba(0,255,195,0.3);
+      box-shadow: 0 -2px 10px rgba(255,153,0,0.3);
       padding: 10px 0;
       z-index: 20;
     }
 
     nav button {
-      background: #022222;
+      background: #2a1a0f;
       border: none;
-      color: #00ffc3;
+      color: #ff9900;
       font-size: 12px;
       cursor: pointer;
       width: 60px;
       height: 48px;
       border-radius: 12px;
       margin: 0 8px;
-      box-shadow: 0 6px 10px rgba(0,255,195,0.3);
+      box-shadow: 0 6px 10px rgba(255,153,0,0.3);
       display: flex;
       align-items: center;
       justify-content: center;
+      user-select: none;
+      transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
     }
 
     nav button.active,
     nav button:hover {
-      background: #00ffc3;
+      background: #ff9900;
       color: #000;
-      box-shadow: 0 0 14px #00ffc3;
+      box-shadow: 0 0 14px #ff9900;
     }
 
     main {
@@ -59,6 +96,10 @@
       justify-content: center;
       text-align: center;
       padding: 20px;
+      flex-direction: column;
+      margin-bottom: 70px; /* to avoid nav overlap */
+      overflow-y: auto;
+      height: calc(100vh - 70px);
     }
 
     .tab {
@@ -67,47 +108,154 @@
       align-items: center;
       justify-content: center;
       width: 100%;
+      overflow-y: auto;
+      padding: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+      box-sizing: border-box;
     }
 
     .tab.active {
       display: flex;
     }
 
-    .circle {
+    /* Flip card styles */
+    .flip-card {
+      background-color: transparent;
       width: 220px;
       height: 220px;
+      perspective: 1000px;
+      margin: 30px auto;
+      cursor: pointer;
+    }
+
+    .flip-card-inner {
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+      position: relative;
       border-radius: 50%;
-      background: radial-gradient(circle at center, #00ffc3, #005f4b);
-      box-shadow: inset 0 0 20px #00ffc3, 0 0 30px rgba(0,255,195,0.7);
+    }
+
+    .flipped {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front, .flip-card-back {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      backface-visibility: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: black;
+      border-radius: 50%;
       font-weight: bold;
-      font-size: 18px;
-      cursor: pointer;
+      font-size: 20px;
+      color: black;
+      box-shadow: inset 0 0 20px #ff9900, 0 0 30px rgba(255,153,0,0.7);
+      user-select: none;
+    }
+
+    .flip-card-front {
+      background: radial-gradient(circle at center, #ff9900, #662200);
       animation: blink 1.5s infinite;
-      margin: 30px auto;
-      position: relative;
+    }
+
+    .flip-card-back {
+      background: radial-gradient(circle at center, #ffa733, #cc5500);
+      transform: rotateY(180deg);
+      box-shadow: inset 0 0 20px #ffa733, 0 0 30px rgba(255,153,0,0.7);
     }
 
     @keyframes blink {
-      0%, 100% { box-shadow: inset 0 0 20px #00ffc3, 0 0 20px rgba(0,255,195,0.6); }
-      50% { box-shadow: inset 0 0 30px #00ffc3, 0 0 40px rgba(0,255,195,0.9); }
+      0%, 100% { box-shadow: inset 0 0 20px #ff9900, 0 0 20px rgba(255,153,0,0.6); }
+      50% { box-shadow: inset 0 0 30px #ff9900, 0 0 40px rgba(255,153,0,0.9); }
     }
 
+    /* Token header flip style */
     #tokenHeader {
-      font-size: 30px;
-      margin-bottom: 10px;
-      color: #00ffc3;
+      font-size: 28px;
+      margin-top: 10px;
+      color: #ff9900;
+      user-select: none;
+      display: flex;
+      justify-content: center;
+      gap: 3px;
+      flex-wrap: wrap;
+    }
+    .flip-digit {
+      background: #331a00;
+      color: #ffcc33;
+      border-radius: 6px;
+      width: 24px;
+      height: 36px;
+      line-height: 36px;
+      font-family: monospace;
+      font-weight: 900;
+      box-shadow: 0 2px 8px #ffcc33aa;
+      perspective: 400px;
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.4s;
+    }
+    .flip-digit .digit-inner {
+      display: inline-block;
+      transform-style: preserve-3d;
     }
 
-    #countdown {
-      font-size: 13px;
+    /* Countdown flip digits - FIXED POSITIONING */
+    #countdownFlip {
+      font-size: 28px;
       color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 3px;
+      font-family: monospace;
+      font-weight: 900;
+      user-select: none;
+      letter-spacing: 2px;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    #countdownFlip .flip-digit {
+      background: #ffcc33;
+      color: #663300;
+      width: 24px;
+      height: 36px;
+      line-height: 36px;
+      box-shadow: 0 2px 8px #663300bb;
     }
 
+    /* Referral link text */
+    #referralLinkText {
+      cursor: pointer;
+      background: #ff9900;
+      color: black;
+      font-weight: 700;
+      padding: 12px 20px;
+      border-radius: 12px;
+      user-select: all;
+      margin-bottom: 16px;
+      display: inline-block;
+      max-width: 100%;
+      overflow-wrap: break-word;
+      transition: background-color 0.3s ease;
+    }
+    #referralLinkText.copied {
+      background-color: #cc7700;
+      color: white;
+    }
+
+    /* Share buttons */
     .share-buttons {
       margin-top: 24px;
       display: flex;
@@ -115,24 +263,54 @@
       gap: 12px;
       justify-content: center;
     }
-
     .share-buttons button {
       min-width: 120px;
       padding: 12px 10px;
       border-radius: 16px;
       border: none;
-      background: #00ffc3;
+      background: #ff9900;
       color: #000;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 5px 15px rgba(0,255,195,0.7);
+      box-shadow: 0 5px 15px rgba(255,153,0,0.7);
       display: flex;
       align-items: center;
       justify-content: center;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    .share-buttons button:hover {
+      background-color: #cc7700;
+    }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      z-index: 100;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .toast.show {
+      opacity: 1;
     }
   </style>
 </head>
 <body>
+  <div id="splashScreen">
+    Welcome to Dot Network
+    <div id="loadingBarContainer">
+      <div id="loadingBar"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Link copied!</div>
 
   <nav>
     <button onclick="switchTab('home')" class="active">Home</button>
@@ -143,15 +321,23 @@
 
   <main>
     <section id="home" class="tab active">
-      <div id="tokenHeader">0.000000 DOT</div>
-      <div class="circle" id="circle" onclick="startMining()">
-        <div id="countdown">Tap to start mining</div>
+      <div id="tokenHeader">0.000000</div>
+      <div class="flip-card" onclick="startMining()">
+        <div class="flip-card-inner" id="flipCard">
+          <div class="flip-card-front">
+            <div id="countdownFlip">24:00:00</div>
+            <div style="margin-top:8px; font-size: 14px; color:#663300; position: absolute; bottom: 30px;">Countdown Timer</div>
+          </div>
+          <div class="flip-card-back">
+            <p>🎉 You earned some DOT!</p>
+          </div>
+        </div>
       </div>
     </section>
 
     <section id="referral" class="tab">
       <h2>Your Referral Link</h2>
-      <input type="text" readonly value="https://dotnetwork.app/invite?ref=YourCode" />
+      <span id="referralLinkText" title="Click to copy">https://dotnetwork.app/invite?ref=YourCode</span>
       <div class="share-buttons">
         <button onclick="shareLink('whatsapp')">WhatsApp</button>
         <button onclick="shareLink('telegram')">Telegram</button>
@@ -163,40 +349,137 @@
     </section>
 
     <section id="whitepaper" class="tab">
-      <h2>Whitepaper</h2>
-      <p>This is the official whitepaper of Dot Network. It describes our vision, mining model, tokenomics, and roadmap. [You can replace this content with your full whitepaper HTML/text.]</p>
+      <h2>Dot Network - Whitepaper</h2>
+      <p><strong>Introduction</strong><br>Dot Network is a decentralized, community-driven platform that allows everyday users to earn tokens directly from their mobile phones without the need for expensive mining hardware.</p>
+      <p><strong>Mission Statement</strong><br>Empowering everyday users to participate in the future of digital currency through simple actions and community engagement.</p>
+      <p><strong>How It Works</strong><br>- Users install the app<br>- Tap the "Start Earning" button<br>- A 24-hour timer runs, rewarding tokens<br>- Users earn extra tokens per referral<br>- Daily check-ins maintain mining status</p>
+      <p><strong>Technology</strong><br>Dot Network is mobile-first and utilizes Firebase for backend services. The system is Web3-ready for future smart contract integration.</p>
+      <p><strong>Tokenomics</strong><br>Total Supply: 1 billion<br>Community Airdrop: 50% (Daily unlock)<br>Marketing: 10%<br>Team: 15%<br>Liquidity Pool: 15%<br>Reserve: 10%</p>
+      <p><strong>Referral Model</strong><br>Users earn bonus tokens for each active referral. Anti-bot and fraud detection systems ensure genuine rewards.</p>
+      <p><strong>Roadmap</strong><br>Q3 2025: App Launch<br>Q4 2025: User Growth<br>Q1 2026: Token Deployment<br>Q2 2026: Wallet Integration<br>Q3 2026: Exchange Listings</p>
+      <p><strong>Vision</strong><br>Bringing blockchain to every mobile user simply and securely.</p>
     </section>
 
     <section id="about" class="tab">
       <h2>About Dot Network</h2>
-      <p>Dot Network is a next-generation decentralized app where users can mine crypto for free — no investment required. It also features a built-in decentralized exchange (DEX) that lets you trade your digital assets securely and seamlessly.</p>
+      <p>Dot Network is a next-gen decentralized app where users mine crypto free — no investment. Features seamless digital asset management and security.</p>
     </section>
   </main>
 
   <script>
+    // Splash screen removal after 4 seconds
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        const splash = document.getElementById('splashScreen');
+        splash.style.opacity = '0';
+        setTimeout(() => splash.style.display = 'none', 500);
+      }, 4000);
+
+      updateTokenDisplay();
+      if(localStorage.getItem('startTime')) startMining();
+      else updateCountdownDisplay(86400);
+
+      const referralCount = parseInt(localStorage.getItem('referralCount')) || 0;
+      document.getElementById('referralCount').innerText = referralCount;
+
+      // Referral link copy on click
+      const referralLinkText = document.getElementById('referralLinkText');
+      referralLinkText.addEventListener('click', () => {
+        copyToClipboard(referralLinkText.textContent, 'Link copied!');
+        referralLinkText.classList.add('copied');
+        setTimeout(() => referralLinkText.classList.remove('copied'), 1500);
+      });
+    });
+
+    // Show toast notification
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    // Improved clipboard function
+    async function copyToClipboard(text, successMsg = 'Copied!') {
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast(successMsg);
+      } catch (err) {
+        // Fallback for browsers without Clipboard API
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          showToast(successMsg);
+        } catch (err) {
+          showToast('Failed to copy. Please copy manually.');
+        }
+        document.body.removeChild(textarea);
+      }
+    }
+
+    // Navigation tabs
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    // Mining timer and tokens
     let mining = false;
     let dotBalance = parseFloat(localStorage.getItem('dotBalance')) || 0;
     let startTime = parseInt(localStorage.getItem('startTime')) || null;
-    const miningRatePerSecond = 0.00003;
+    const miningDuration = 86400; // 24 hours in seconds
+    const miningRatePerSecond = 0.00006;
     let timer = null;
 
+    function createFlipDigits(str) {
+      return str.split('').map(ch => {
+        return `<span class="flip-digit"><span class="digit-inner">${ch}</span></span>`;
+      }).join('');
+    }
+
+    function updateTokenDisplay() {
+      const fixedBalance = dotBalance.toFixed(6);
+      const tokenHeader = document.getElementById('tokenHeader');
+      tokenHeader.innerHTML = createFlipDigits(fixedBalance);
+    }
+
+    function secondsToHMS(sec) {
+      const h = Math.floor(sec / 3600).toString().padStart(2,'0');
+      const m = Math.floor((sec % 3600) / 60).toString().padStart(2,'0');
+      const s = (sec % 60).toString().padStart(2,'0');
+      return `${h}:${m}:${s}`;
+    }
+
+    function updateCountdownDisplay(secondsLeft) {
+      const countdownDiv = document.getElementById('countdownFlip');
+      countdownDiv.innerHTML = secondsToHMS(secondsLeft).split('').map(ch => {
+        if(ch === ':') return `<span style="margin: 0 3px;">:</span>`;
+        return `<span class="flip-digit"><span class="digit-inner">${ch}</span></span>`;
+      }).join('');
+    }
+
     function updateMining() {
-      if (startTime) {
-        const now = Date.now();
-        const elapsed = Math.floor((now - startTime) / 1000);
-        if (elapsed < 86400) {
-          const newBalance = dotBalance + miningRatePerSecond;
-          dotBalance = newBalance;
-          localStorage.setItem('dotBalance', dotBalance.toFixed(6));
-          document.getElementById('tokenHeader').innerText = dotBalance.toFixed(6) + ' DOT';
-          document.getElementById('countdown').innerText = formatTime(86400 - elapsed);
-        } else {
-          document.getElementById('countdown').innerText = 'Tap to start mining';
-          mining = false;
-          startTime = null;
-          localStorage.removeItem('startTime');
-          clearInterval(timer);
-        }
+      if (!startTime) return;
+      const now = Date.now();
+      const elapsed = Math.floor((now - startTime) / 1000);
+      if (elapsed < miningDuration) {
+        const secondsLeft = miningDuration - elapsed;
+        dotBalance += miningRatePerSecond;
+        localStorage.setItem('dotBalance', dotBalance.toFixed(6));
+        updateTokenDisplay();
+        updateCountdownDisplay(secondsLeft);
+      } else {
+        mining = false;
+        startTime = null;
+        localStorage.removeItem('startTime');
+        clearInterval(timer);
+        document.getElementById('flipCard').classList.add('flipped');
+        updateCountdownDisplay(0);
       }
     }
 
@@ -208,47 +491,36 @@
       if (!mining) {
         mining = true;
         timer = setInterval(updateMining, 1000);
+        updateMining();
       }
     }
 
-    function formatTime(sec) {
-      const h = Math.floor(sec / 3600);
-      const m = Math.floor((sec % 3600) / 60);
-      const s = sec % 60;
-      return `${h}h ${m}m ${s}s remaining`;
-    }
-
+    // Share buttons with mobile app support
     function shareLink(platform) {
-      const url = encodeURIComponent('https://dotnetwork.app/invite?ref=YourCode');
-      let fullURL = '';
+      const referralUrl = encodeURIComponent('https://dotnetwork.app/invite?ref=YourCode');
+      let shareUrl = '';
+      const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+
       switch(platform) {
-        case 'whatsapp': fullURL = `https://wa.me/?text=${url}`; break;
-        case 'telegram': fullURL = `https://t.me/share/url?url=${url}`; break;
-        case 'facebook': fullURL = `https://www.facebook.com/sharer/sharer.php?u=${url}`; break;
-        case 'email': fullURL = `mailto:?subject=Join Dot Network&body=${url}`; break;
+        case 'whatsapp':
+          shareUrl = isMobile ? `whatsapp://send?text=${referralUrl}` : `https://wa.me/?text=${referralUrl}`;
+          break;
+        case 'telegram':
+          shareUrl = isMobile ? `tg://msg_url?url=${referralUrl}` : `https://t.me/share/url?url=${referralUrl}`;
+          break;
+        case 'facebook':
+          shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${referralUrl}`;
+          break;
+        case 'email':
+          shareUrl = `mailto:?subject=Join Dot Network&body=${referralUrl}`;
+          break;
       }
-      window.open(fullURL, '_blank');
+      window.open(shareUrl, '_blank');
     }
 
     function copyLink() {
-      navigator.clipboard.writeText('https://dotnetwork.app/invite?ref=YourCode');
-      alert('Link copied!');
+      copyToClipboard('https://dotnetwork.app/invite?ref=YourCode');
     }
-
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-      document.querySelector(`#${tabId}`).classList.add('active');
-      document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('tokenHeader').innerText = dotBalance.toFixed(6) + ' DOT';
-      if (localStorage.getItem('startTime')) startMining();
-
-      const referralCount = parseInt(localStorage.getItem('referralCount')) || 0;
-      document.getElementById('referralCount').innerText = referralCount;
-    });
   </script>
 </body>
 </html>
