@@ -16,6 +16,9 @@
       display: flex;
       flex-direction: column;
     }
+    html {
+      overscroll-behavior-y: contain; /* Prevents pull-to-refresh restart */
+    }
 
     /* Splash screen */
     #splashScreen {
@@ -350,7 +353,7 @@
             <div style="margin-top:8px; font-size: 14px; color:#663300; position: absolute; bottom: 30px;">Countdown Timer</div>
           </div>
           <div class="flip-card-back">
-            <p>Tap to Mine!</p>
+            <p>🎉 You earned some DOT!</p>
           </div>
         </div>
       </div>
@@ -533,7 +536,7 @@
     let mining = false;
     let timer = null;
     const miningDuration = 86400; // 24 hours in seconds
-    const miningRatePerSecond = 0.0006945;
+    const miningRatePerSecond = 0.00006;
 
     function updateMining() {
       const startTime = parseInt(localStorage.getItem('startTime'));
@@ -552,12 +555,17 @@
         updateAllDisplays();
         updateCountdownDisplay(secondsLeft);
       } else {
-        mining = false;
-        localStorage.removeItem('startTime');
-        clearInterval(timer);
-        document.getElementById('flipCard').classList.add('flipped');
-        updateCountdownDisplay(0);
+        completeMiningSession();
       }
+    }
+
+    function completeMiningSession() {
+      mining = false;
+      localStorage.removeItem('startTime');
+      clearInterval(timer);
+      document.getElementById('flipCard').classList.add('flipped');
+      updateCountdownDisplay(0);
+      showToast("Mining session complete! Tap to start again");
     }
 
     function startMining(flipCard = true) {
@@ -574,30 +582,44 @@
       }
     }
 
-    // Share buttons with mobile app support
-    function shareLink(platform) {
-      const referralUrl = encodeURIComponent(getReferralLink());
+    // ===== FIXED SHARING FUNCTION =====
+    async function shareLink(platform) {
+      const referralUrl = getReferralLink();
       const userCode = localStorage.getItem('referralCode') || 'YourCode';
-      const shareText = encodeURIComponent(`Join me on Dot Network! Use my code: ${userCode}`);
+      const shareText = `Join me on Dot Network! Use my code: ${userCode}\n\n${referralUrl}`;
       
-      let shareUrl = '';
-      switch(platform) {
-        case 'whatsapp':
-          shareUrl = `https://wa.me/?text=${shareText}%20${referralUrl}`;
-          break;
-        case 'telegram':
-          shareUrl = `https://t.me/share/url?url=${referralUrl}&text=${shareText}`;
-          break;
-        case 'facebook':
-          shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${referralUrl}`;
-          break;
-        case 'email':
-          shareUrl = `mailto:?subject=Join%20Dot%20Network&body=${shareText}%0A%0A${referralUrl}`;
-          break;
+      try {
+        if (navigator.share) {
+          // Use Web Share API if available (works on mobile)
+          await navigator.share({
+            title: 'Dot Network',
+            text: `Join me on Dot Network! Use my code: ${userCode}`,
+            url: referralUrl
+          });
+        } else {
+          // Fallback for desktop browsers
+          let shareUrl = '';
+          switch(platform) {
+            case 'whatsapp':
+              shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+              break;
+            case 'telegram':
+              shareUrl = `https://t.me/share/url?url=${encodeURIComponent(referralUrl)}&text=${encodeURIComponent(shareText)}`;
+              break;
+            case 'facebook':
+              shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}`;
+              break;
+            case 'email':
+              shareUrl = `mailto:?subject=Join%20Dot%20Network&body=${encodeURIComponent(shareText)}`;
+              break;
+          }
+          window.open(shareUrl, '_blank');
+        }
+        showToast("Shared! Earn 1 DOT when someone joins");
+      } catch (err) {
+        console.error('Sharing failed:', err);
+        showToast("Couldn't share. Please try another method.");
       }
-      
-      window.open(shareUrl, '_blank');
-      showToast("Shared! Earn 1 DOT when someone joins");
     }
 
     function copyLink() {
@@ -652,6 +674,40 @@
         referralLinkText.classList.add('copied');
         setTimeout(() => referralLinkText.classList.remove('copied'), 1500);
       });
+
+      // ===== FIXED PULL-TO-REFRESH ISSUE =====
+      let preventRefresh = false;
+      document.addEventListener('touchmove', (e) => {
+        if (window.scrollY === 0 && !preventRefresh) {
+          preventRefresh = true;
+          showToast("Use the timer to refresh your mining session");
+          setTimeout(() => preventRefresh = false, 1000);
+          e.preventDefault();
+        }
+      }, { passive: false });
+      
+      // Add proper refresh indicator
+      const mainElement = document.querySelector('main');
+      let touchStartY = 0;
+      
+      mainElement.addEventListener('touchstart', (e) => {
+        touchStartY = e.touches[0].clientY;
+      }, { passive: true });
+      
+      mainElement.addEventListener('touchend', (e) => {
+        const touchEndY = e.changedTouches[0].clientY;
+        const pullDistance = touchStartY - touchEndY;
+        
+        // If pulled down more than 100px from top
+        if (window.scrollY === 0 && pullDistance > 100) {
+          if (mining) {
+            showToast("Mining session refreshed");
+            updateMining(); // Just update the display
+          } else {
+            showToast("Tap the circle to start mining");
+          }
+        }
+      }, { passive: true });
     });
 
     // For testing purposes only - simulate a referral
