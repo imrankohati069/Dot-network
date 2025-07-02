@@ -1,65 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading...</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            overflow: hidden; 
-        }
-        
-        
-        .loading-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: url('material/images/loading.jpg') no-repeat center center fixed; 
-            background-size: cover; 
-            color: white;
-            text-align: center;
-            font-family: Arial, sans-serif;
-        }
-        
-        .loading-container h1 {
-            font-size: 24px;
-            margin: 0;
-        }
-        
-        .spinner {
-            border: 8px solid rgba(255, 255, 255, 0.1);
-            border-left: 8px solid #d5d7dd; 
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin-top: 20px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
-</head>
-<body></body>
-    <div class="loading-container">
-        <div>
-            <h1>Loading...</h1>
-            <div class="spinner"></div>
-        </div>
-    </div>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome to Dot Network</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: black;
+      font-family: Arial, sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
 
-    <script>
-       
-        setTimeout(function() {
-            window.location.href = 'home.html'; 
-        }, 5000);
-    </script>
+    .welcome-text {
+      font-size: 28px;
+      font-weight: bold;
+      color: rgba(243, 215, 57, 0.993);
+      margin-bottom: 80px;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .progress-bar-container {
+      width: 80%;
+      max-width: 300px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(243, 215, 57, 0.993);
+    }
+
+    .progress-bar {
+      height: 8px;
+      width: 0%;
+      background-color: rgba(243, 215, 57, 0.993);
+      animation: fillBar 4s linear forwards;
+    }
+
+    @keyframes fillBar {
+      to { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="welcome-text">Welcome to Dot Network</div>
+  <div class="progress-bar-container">
+    <div class="progress-bar"></div>
+  </div>
+
+  <script>
+    setTimeout(function () {
+      window.location.href = 'home.html';
+    }, 4000);
+  </script>
+
 </body>
 </html>
