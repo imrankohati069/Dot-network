@@ -131,15 +131,34 @@
       margin-top: 5px;
     }
 
-    .coming-soon-icons-right {
-      position: fixed;
-      top: 120px;
-      right: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      z-index: 100;
-    }
+   .extra-buttons {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.glow-btn {
+  background: rgba(0, 0, 0, 0.9);
+  padding: 8px 14px;
+  border-radius: 10px;
+  color: white;
+  font-size: 14px;
+  box-shadow: 0 4px 8px rgba(243, 215, 57, 0.993);
+  border: 1px solid rgba(243, 215, 57, 0.8);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 90px;
+  text-align: center;
+}
+
+.glow-btn:hover {
+  background: rgba(243, 215, 57, 0.3);
+  color: #f3d739;
+}
+
+
 
     .coming-soon {
       background: rgba(0, 0, 0, 0.7);
@@ -159,16 +178,15 @@
     <span id="coinBalance">0</span> Tokens
   </div>
 
-  <div class="coming-soon-icons-right">
-    <div class="coming-soon" onclick="togglePopup('aboutPopup')">About Us</div>
-    <div class="coming-soon" onclick="togglePopup('supportPopup')">Support</div>
-    <div class="coming-soon" onclick="togglePopup('comingSoonPopup')">Wallet</div>
-  </div>
-
   <div id="mineCircle" class="circle-mine" onclick="startMining()">
     <div id="mineText">Tap to Mine</div>
     <div id="timerText"></div>
   </div>
+<div class="extra-buttons">
+  <div class="glow-btn" onclick="togglePopup('aboutPopup')">About Us</div>
+  <div class="glow-btn" onclick="togglePopup('supportPopup')">Support</div>
+  <div class="glow-btn" onclick="togglePopup('comingSoonPopup')">Wallet</div>
+</div>
 
   <div class="popup" id="aboutPopup">
     <div class="popup-content">
