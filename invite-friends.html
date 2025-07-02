@@ -29,8 +29,8 @@
       box-shadow: 0 4px 8px rgba(243, 215, 57, 0.993);
     }
     .back-button {
-      background-color: rgba(0, 0, 0, 0.993);
-      color: rgba(243, 215, 57, 0.993);
+      background-color: rgba(243, 215, 57, 0.993);
+      color: white;
       border: none;
       padding: 3px;
       cursor: pointer;
@@ -53,9 +53,8 @@
       box-shadow: 0 4px 8px rgba(243, 215, 57, 0.993);
     }
     button {
-      background-color: rgba(0, 0, 0, 0.993);
-      color: rgba(255, 255, 255, 0.993);
- box-shadow: 0 4px 8px rgba(243, 215, 57, 0.993);
+      background-color: rgba(243, 215, 57, 0.993);
+      color: white;
       border: none;
       padding: 10px 20px;
       cursor: pointer;
@@ -104,9 +103,7 @@
 
   <div class="sections">
     <div class="invite-section">
-      <button onclick="shareOnTelegram()">📩 Share on Telegram</button><br>
-      <button onclick="shareOnWhatsApp()">🟢 Share on WhatsApp</button><br>
-      <button onclick="shareOnFacebook()">🔵 Share on Facebook</button>
+      <button onclick="shareWithApps()">📲 Share with Friends</button>
     </div>
 
     <div class="copy-url-section">
@@ -126,8 +123,8 @@
 
   <script>
     const referralBase = "https://t.me/DubaiEmpire_bot";
-    
-    // Generate or retrieve unique referral code
+
+    // 1. Create referral code once
     let userRefCode = localStorage.getItem("userRefCode");
     if (!userRefCode) {
       userRefCode = "ref_" + Math.random().toString(36).substring(2, 10);
@@ -136,27 +133,29 @@
 
     const referralUrl = `${referralBase}?start=${userRefCode}`;
 
+    // 2. Back button
     function goBack() {
       window.history.back();
     }
 
-    function shareOnTelegram() {
-      const message = encodeURIComponent("🚀 Join Dubai Empire and earn rewards! 💰");
-      const telegramUrl = `https://t.me/share/url?url=${referralUrl}&text=${message}`;
-      window.location.href = telegramUrl;
+    // 3. Share using mobile native share panel
+    function shareWithApps() {
+      const shareData = {
+        title: "Join Dubai Empire",
+        text: "🚀 Join Dubai Empire and earn rewards! 💰",
+        url: referralUrl
+      };
+
+      if (navigator.share) {
+        navigator.share(shareData)
+          .then(() => console.log("Shared successfully"))
+          .catch((err) => console.log("Share failed", err));
+      } else {
+        alert("Sharing not supported in this browser.");
+      }
     }
 
-    function shareOnWhatsApp() {
-      const message = encodeURIComponent("🚀 Join Dubai Empire and earn tokens!\n" + referralUrl);
-      const url = `https://wa.me/?text=${message}`;
-      window.location.href = url;
-    }
-
-    function shareOnFacebook() {
-      const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${referralUrl}`;
-      window.open(fbUrl, "_blank");
-    }
-
+    // 4. Copy link to clipboard
     function copyReferralLink() {
       navigator.clipboard.writeText(referralUrl)
         .then(() => showPopup())
@@ -169,7 +168,7 @@
       setTimeout(() => { popup.style.display = "none"; }, 2000);
     }
 
-    // Check for referral bonus on page load
+    // 5. Handle referral bonuses
     document.addEventListener("DOMContentLoaded", () => {
       const urlParams = new URLSearchParams(window.location.search);
       const ref = urlParams.get("ref");
@@ -188,9 +187,7 @@
       }
 
       const referralDisplay = document.getElementById("refCount");
-      if (referralDisplay) {
-        referralDisplay.innerText = localStorage.getItem("referrals") || 0;
-      }
+      referralDisplay.innerText = localStorage.getItem("referrals") || 0;
     });
   </script>
 </body>
