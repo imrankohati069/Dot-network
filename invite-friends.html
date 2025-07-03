@@ -124,13 +124,12 @@
   <script>
     const referralBase = "https://t.me/DubaiEmpire_bot";
 
-    // 1. Create referral code once
+    // 1. Generate referral code
     let userRefCode = localStorage.getItem("userRefCode");
     if (!userRefCode) {
       userRefCode = "ref_" + Math.random().toString(36).substring(2, 10);
       localStorage.setItem("userRefCode", userRefCode);
     }
-
     const referralUrl = `${referralBase}?start=${userRefCode}`;
 
     // 2. Back button
@@ -138,20 +137,38 @@
       window.history.back();
     }
 
-    // 3. Share using mobile native share panel
+    // 3. SHARE FIXED: Works on ALL devices (mobile/desktop)
     function shareWithApps() {
-      const shareData = {
-        title: "Join Dubai Empire",
-        text: "🚀 Join Dubai Empire and earn rewards! 💰",
-        url: referralUrl
-      };
-
+      const shareText = `🚀 Join Dubai Empire and earn rewards! 💰\n${referralUrl}`;
+      
+      // Try native share (mobile)
       if (navigator.share) {
-        navigator.share(shareData)
-          .then(() => console.log("Shared successfully"))
-          .catch((err) => console.log("Share failed", err));
+        navigator.share({
+          title: "Join Dubai Empire",
+          text: shareText,
+          url: referralUrl
+        }).catch(() => fallbackShare(shareText)); // Fallback if native fails
+      } 
+      // Fallback for desktop/old devices
+      else {
+        fallbackShare(shareText);
+      }
+    }
+
+    // Fallback options
+    function fallbackShare(text) {
+      // Option 1: Open WhatsApp directly
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+      
+      // Option 2: Open Telegram directly
+      const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(text)}`;
+      
+      // Ask user how they want to share
+      const choice = confirm("Open WhatsApp to share? (Press OK for WhatsApp, Cancel for Telegram)");
+      if (choice) {
+        window.open(whatsappUrl, "_blank");
       } else {
-        alert("Sharing not supported in this browser.");
+        window.open(telegramUrl, "_blank");
       }
     }
 
@@ -168,7 +185,7 @@
       setTimeout(() => { popup.style.display = "none"; }, 2000);
     }
 
-    // 5. Handle referral bonuses
+    // 5. Handle referrals
     document.addEventListener("DOMContentLoaded", () => {
       const urlParams = new URLSearchParams(window.location.search);
       const ref = urlParams.get("ref");
@@ -186,8 +203,8 @@
         alert("🎉 You received 1 bonus token from referral!");
       }
 
-      const referralDisplay = document.getElementById("refCount");
-      referralDisplay.innerText = localStorage.getItem("referrals") || 0;
+      // Update referral count display
+      document.getElementById("refCount").innerText = localStorage.getItem("referrals") || 0;
     });
   </script>
 </body>
