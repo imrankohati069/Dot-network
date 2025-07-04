@@ -255,7 +255,9 @@ function runMiningTimer() {
   document.getElementById("mineText").innerText = "Mining...";
 
   miningInterval = setInterval(() => {
-    const remaining = miningEnd - Date.now();
+    const now = Date.now();
+    const remaining = miningEnd - now;
+
     if (remaining <= 0) {
       clearInterval(miningInterval);
       mining = false;
@@ -263,13 +265,20 @@ function runMiningTimer() {
       document.getElementById("mineText").innerText = "Tap to Mine";
       document.getElementById("timerText").innerText = "";
       localStorage.removeItem("miningEnd");
+      localStorage.removeItem("lastUpdate");
       return;
     }
 
-    coinBalance += 0.00001;
-    coinBalance = parseFloat(coinBalance.toFixed(5));
-    localStorage.setItem("coinBalance", coinBalance);
-    updateBalance();
+    const lastUpdate = parseInt(localStorage.getItem("lastUpdate")) || now;
+    const secondsPassed = Math.floor((now - lastUpdate) / 1000);
+    if (secondsPassed >= 1) {
+      coinBalance += 0.00001 * secondsPassed;
+      coinBalance = parseFloat(coinBalance.toFixed(5));
+      localStorage.setItem("coinBalance", coinBalance);
+      localStorage.setItem("lastUpdate", now);
+      updateBalance();
+    }
+
     document.getElementById("timerText").innerText = formatTime(remaining);
   }, 1000);
 }
@@ -285,6 +294,7 @@ function startMining() {
 
   miningEnd = now + 86400000; // 24 hours
   localStorage.setItem("miningEnd", miningEnd);
+  localStorage.setItem("lastUpdate", now);
   runMiningTimer();
 }
 
@@ -294,8 +304,10 @@ function resumeMiningIfActive() {
     runMiningTimer();
   } else {
     localStorage.removeItem("miningEnd");
+    localStorage.removeItem("lastUpdate");
   }
 }
+
 
 function togglePopup(id) {
   const popup = document.getElementById(id);
