@@ -124,68 +124,74 @@
     <a class="nav-item" href="White paper.html">White paper</a>
   </div>
 
-  <script>
-    const referralBase = "https://t.me/DubaiEmpire_bot";
+ <script>
+  const referralBase = "https://t.me/DubaiEmpire_bot";
 
-    let userRefCode = localStorage.getItem("userRefCode");
-    if (!userRefCode) {
-      userRefCode = "ref_" + Math.random().toString(36).substring(2, 10);
-      localStorage.setItem("userRefCode", userRefCode);
+  let userRefCode = localStorage.getItem("userRefCode");
+  if (!userRefCode) {
+    userRefCode = "ref_" + Math.random().toString(36).substring(2, 10);
+    localStorage.setItem("userRefCode", userRefCode);
+  }
+
+  const referralUrl = `${referralBase}?start=${userRefCode}`;
+  const message = `🚀 Join Dubai Empire and earn rewards! 💰\n${referralUrl}`;
+
+  function goBack() {
+    window.history.back();
+  }
+
+  function shareWhatsApp() {
+    const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
+  }
+
+  function shareTelegram() {
+    const url = `https://t.me/share/url?url=${encodeURIComponent(referralUrl)}&text=${encodeURIComponent("🚀 Join Dubai Empire and earn rewards! 💰")}`;
+    window.open(url, "_blank");
+  }
+
+  function shareFacebook() {
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}`;
+    window.open(url, "_blank");
+  }
+
+  function copyReferralLink() {
+    navigator.clipboard.writeText(referralUrl)
+      .then(() => showPopup())
+      .catch(() => alert('Failed to copy link. Try manually.'));
+  }
+
+  function showPopup() {
+    const popup = document.getElementById("popup");
+    popup.style.display = "block";
+    setTimeout(() => {
+      popup.style.display = "none";
+    }, 2000);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const ref = urlParams.get("ref");
+
+    if (ref && !localStorage.getItem("refClaimed_" + ref)) {
+      let currentTokens = parseFloat(localStorage.getItem("coinBalance")) || 0;
+      currentTokens += 1;
+      localStorage.setItem("coinBalance", currentTokens);
+
+      let referrals = parseInt(localStorage.getItem("referrals")) || 0;
+      referrals += 1;
+      localStorage.setItem("referrals", referrals);
+
+      localStorage.setItem("refClaimed_" + ref, "true");
+      alert("🎉 You received 1 bonus token from referral!");
     }
-    const referralUrl = `${referralBase}?start=${userRefCode}`;
 
-    function goBack() {
-      window.history.back();
-    }
+    document.getElementById("refCount").innerText = localStorage.getItem("referrals") || 0;
+  });
+</script>
 
-    function shareWhatsApp() {
-      const message = `🚀 Join Dubai Empire and earn rewards! 💰\n${referralUrl}`;
-      const url = `whatsapp://send?text=${encodeURIComponent(message)}`;
-      window.location.href = url;
-    }
+   
 
-    function shareTelegram() {
-      const message = `🚀 Join Dubai Empire and earn rewards! 💰`;
-      const url = `tg://msg_url?url=${encodeURIComponent(referralUrl)}&text=${encodeURIComponent(message)}`;
-      window.location.href = url;
-    }
-
-    function shareFacebook() {
-      const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}`;
-      window.open(url, "_blank");
-    }
-
-    function copyReferralLink() {
-      navigator.clipboard.writeText(referralUrl)
-        .then(() => showPopup())
-        .catch(() => alert('Failed to copy link. Try manually.'));
-    }
-
-    function showPopup() {
-      const popup = document.getElementById("popup");
-      popup.style.display = "block";
-      setTimeout(() => { popup.style.display = "none"; }, 2000);
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const ref = urlParams.get("ref");
-
-      if (ref && !localStorage.getItem("refClaimed_" + ref)) {
-        let currentTokens = parseFloat(localStorage.getItem("coinBalance")) || 0;
-        currentTokens += 1;
-        localStorage.setItem("coinBalance", currentTokens);
-
-        let referrals = parseInt(localStorage.getItem("referrals")) || 0;
-        referrals += 1;
-        localStorage.setItem("referrals", referrals);
-
-        localStorage.setItem("refClaimed_" + ref, "true");
-        alert("🎉 You received 1 bonus token from referral!");
-      }
-
-      document.getElementById("refCount").innerText = localStorage.getItem("referrals") || 0;
-    });
-  </script>
+   
 </body>
 </html>
