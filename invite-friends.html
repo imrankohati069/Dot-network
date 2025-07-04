@@ -125,6 +125,7 @@
   </div>
 
  <script>
+  <script>
   const referralBase = "https://t.me/DubaiEmpire_bot";
 
   let userRefCode = localStorage.getItem("userRefCode");
@@ -134,25 +135,37 @@
   }
 
   const referralUrl = `${referralBase}?start=${userRefCode}`;
-  const message = `🚀 Join Dubai Empire and earn rewards! 💰\n${referralUrl}`;
 
   function goBack() {
     window.history.back();
   }
 
+  // Native share functions calling Android interface
   function shareWhatsApp() {
-    const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
-    window.open(url, "_blank");
+    const message = `🚀 Join Dubai Empire and earn rewards! 💰\n${referralUrl}`;
+    if (window.Android && window.Android.shareWhatsApp) {
+      window.Android.shareWhatsApp(message);
+    } else {
+      alert("WhatsApp sharing not available");
+    }
   }
 
   function shareTelegram() {
-    const url = `https://t.me/share/url?url=${encodeURIComponent(referralUrl)}&text=${encodeURIComponent("🚀 Join Dubai Empire and earn rewards! 💰")}`;
-    window.open(url, "_blank");
+    const message = `🚀 Join Dubai Empire and earn rewards! 💰\n${referralUrl}`;
+    if (window.Android && window.Android.shareTelegram) {
+      window.Android.shareTelegram(message);
+    } else {
+      alert("Telegram sharing not available");
+    }
   }
 
   function shareFacebook() {
-    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}`;
-    window.open(url, "_blank");
+    const message = `🚀 Join Dubai Empire and earn rewards! 💰\n${referralUrl}`;
+    if (window.Android && window.Android.shareFacebook) {
+      window.Android.shareFacebook(message);
+    } else {
+      alert("Facebook sharing not available");
+    }
   }
 
   function copyReferralLink() {
@@ -188,10 +201,6 @@
 
     document.getElementById("refCount").innerText = localStorage.getItem("referrals") || 0;
   });
-</script>
-
-   
-
-   
+</script>   
 </body>
 </html>
