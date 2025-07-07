@@ -3,32 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+   <title>Test Logo</title>
   <title>Welcome to Dot Network</title>
   <style>
     body, html {
       margin: 0;
       padding: 0;
       height: 100%;
-      background-color: black;
-      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #000000, #1a1a1a);
+      font-family: 'Segoe UI', Arial, sans-serif;
       color: white;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
+      overflow: hidden;
     }
 
-    .welcome-text {
+    .glow-text {
       font-size: 28px;
       font-weight: bold;
-      color: rgba(243, 215, 57, 0.993);
-      margin-bottom: 80px;
-      animation: fadeIn 2s ease-in-out;
+      color: #f3d739;
+      margin-bottom: 60px;
+      animation: glow 2s ease-in-out infinite alternate, fadeIn 1.5s ease-out;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 5px #f3d739; }
+      to { text-shadow: 0 0 20px #f3d739, 0 0 30px #f3d739; }
     }
 
     @keyframes fadeIn {
       0% { opacity: 0; transform: translateY(10px); }
       100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Burj Al Arab Image */
+        .burj-image {
+           width: 120px;
+  height: auto;
+  margin-bottom: 20px;
+  animation: fadeIn 2s ease-in-out;
+}
+
+
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
     }
 
     .progress-bar-container {
@@ -37,13 +58,13 @@
       background: rgba(255, 255, 255, 0.1);
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 4px 8px rgba(243, 215, 57, 0.993);
+      box-shadow: 0 0 12px rgba(243, 215, 57, 0.5);
     }
 
     .progress-bar {
-      height: 8px;
+      height: 10px;
       width: 0%;
-      background-color: rgba(243, 215, 57, 0.993);
+      background: linear-gradient(90deg, #f3d739, #fff089);
       animation: fillBar 4s linear forwards;
     }
 
@@ -54,7 +75,15 @@
 </head>
 <body>
 
-  <div class="welcome-text">Welcome to Dot Network</div>
+  <img src="material/images/logo.png" alt="Burj Al Arab" class="burj-image">
+
+
+
+
+
+
+  <div class="glow-text">Welcome to Dot Network</div>
+
   <div class="progress-bar-container">
     <div class="progress-bar"></div>
   </div>
