@@ -319,7 +319,7 @@
             const winningIndex = getWeightedRandomPrizeIndex();
             const winningPrize = prizes[winningIndex];
             const extraRotations = 8;
-            const offset = segmentAngle / 2;
+            const offset = segmentAngle / 2; 
             const totalRotation = (360 * extraRotations) + (360 - (winningIndex * segmentAngle) - offset);
             wheel.style.transform = `rotate(${totalRotation}deg)`;
             setTimeout(() => {
