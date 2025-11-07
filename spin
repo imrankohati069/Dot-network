@@ -1,1 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chain65 - Spin </title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --wheel-bg: #1f1f1f;
+            --primary-color: #ffffff;
+            --accent-color: #ffbd09;
+            --button-bg: #4caf50;
+            --button-shadow: #ffffff;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #001d17;
+            background-image:
+                radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
+                radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
+                linear-gradient(180deg, #0e574a 0%, #001a16 100%),
+                repeating-linear-gradient(
+                    45deg,
+                    rgba(255, 255, 255, 0.02) 0px,
+                    rgba(255, 255, 255, 0.02) 2px,
+                    transparent 2px,
+                    transparent 10px
+                );
+            background-blend-mode: overlay, overlay, normal, overlay;
+        }
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 2px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #001d17;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgb(255, 255, 255);
+        }
+        .app-container {
+            background: var(--wheel-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 40px rgba(0, 229, 255, 0.2);
+            text-align: center;
+            width: 90%;
+            max-width: 450px;
+        }
+        .title {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        .coin-display {
+            font-size: 18px;
+            margin-bottom: 25px;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        .wheel-area {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            margin: 0 auto 30px auto;
+        }
+        #wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+            border: 8px solid var(--primary-color);
+            box-shadow: 0 0 15px var(--primary-color);
+            transition: transform 5s cubic-bezier(0.25, 0.1, 0, 1.0);
+        }
+        .segment {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: 100% 100%;
+            clip-path: polygon(0 0, 100% 0, 100% 100%);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .segment-text {
+            position: relative;
+            transform: rotate(45deg) translate(20px, 10px);
+            color: var(--bg-color);
+            font-size: 14px;
+            font-weight: bold;
+            padding: 5px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        .pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 25px solid var(--accent-color);
+            z-index: 10;
+        }
+        #spin-button {
+            padding: 15px 40px;
+            background-color: var(--button-bg);
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 var(--button-shadow);
+            text-transform: uppercase;
+            transition: all 0.1s ease;
+        }
+        #spin-button:active {
+            box-shadow: 0 2px 0 var(--button-shadow);
+            transform: translateY(4px);
+        }
+        #spin-button:disabled {
+            background-color: #757575;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #bdbdbd;
+        }
+        .footer {
+            background-color: #001d17;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.993);
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+        }
+        .footer .nav-item {
+            background-color: #001d17;
+            padding: 8px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.993);
+            text-align: center;
+            width: 80px;
+        }
+        .footer a {
+            text-decoration: none;
+            color: white;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .footer i {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <h1 class="title">DAILY REWARD SPIN 💎</h1>
+        <div class="coin-display">
+            Coins: <span id="coin-count">0</span>
+        </div>
+        <div class="wheel-area">
+            <div class="pointer"></div>
+            <div id="wheel"></div>
+        </div>
+        <button id="spin-button">SPIN NOW</button>
+        <p id="message" class="message"></p>
+    </div>
+    <div class="footer">
+        <div class="nav-item">
+            <a href="home.html">
+                <i class="fas fa-home"></i> Home
+            </a>
+        </div>
+        <div class="nav-item">
+            <a href="spin.html">
+                <i class="fas fa-spin"></i> Spin
+            </a>
+        </div>
+        <div class="nav-item">
+            <a href="invite-friends.html">
+                <i class="fas fa-user-friends"></i> Friends
+            </a>
+        </div>
+        <div class="nav-item">
+            <a href="White paper.html">
+                <i class="fas fa-tasks"></i> White paper
+            </a>
+        </div>
+    </div>
+    <script>
+        // --- Spin Wheel Configuration ---
+        const prizes = [
+            { name: "1 c65", value: 1, color: "#ffff", weight: 6 },
+            { name: "2 c65", value: 2, color: "#ffff", weight: 4 },
+            { name: "5 c65", value: 5, color: "#ffff", weight: 2 },
+            { name: "10 c65", value: 10, color: "#ffff", weight: 5 },
+            { name: "50 c65🏆", value: 50, color: "#ffff", weight: 1 },
+            { name: "20 c65", value: 20, color: "#ffff", weight: 3 },
+        ];
 
+        const COOLDOWN_HOURS = 24; // 24 hours block after spin
+        const LAST_SPIN_KEY = 'cryptoLastSpinTime';
+        const HOME_COIN_KEY = 'coinBalance'; // Home page coinBalance, ONLY THIS WILL BE USED
+
+        // --- DOM Elements ---
+        const wheel = document.getElementById('wheel');
+        const spinButton = document.getElementById('spin-button');
+        const messageElement = document.getElementById('message');
+        const coinCountElement = document.getElementById('coin-count');
+
+        const numSegments = prizes.length;
+        const segmentAngle = 360 / numSegments;
+
+        let totalCoins = 0;
+
+        // --- Helper Functions ---
+
+        function getCoins() {
+            totalCoins = parseFloat(localStorage.getItem(HOME_COIN_KEY)) || 0;
+            coinCountElement.textContent = totalCoins.toLocaleString();
+        }
+
+        function addCoins(amount) {
+            // Update ONLY home page coins (coinBalance)!
+            let homeCoins = parseFloat(localStorage.getItem(HOME_COIN_KEY)) || 0;
+            homeCoins += amount;
+            localStorage.setItem(HOME_COIN_KEY, homeCoins.toString());
+            getCoins();
+        }
+
+        function canSpin() {
+            const lastSpinTime = localStorage.getItem(LAST_SPIN_KEY);
+            if (!lastSpinTime) return true;
+            const currentTime = new Date().getTime();
+            const cooldownDuration = COOLDOWN_HOURS * 60 * 60 * 1000;
+            return (currentTime - parseInt(lastSpinTime)) >= cooldownDuration;
+        }
+
+        function updateSpinButtonState() {
+            getCoins();
+            if (canSpin()) {
+                spinButton.textContent = 'SPIN NOW';
+                spinButton.disabled = false;
+                messageElement.textContent = 'Apna Daily Reward jeetne ke liye Spin karein.';
+            } else {
+                const lastSpinTime = parseInt(localStorage.getItem(LAST_SPIN_KEY));
+                const cooldownDuration = COOLDOWN_HOURS * 60 * 60 * 1000;
+                const nextSpinTime = lastSpinTime + cooldownDuration;
+                const remainingTime = nextSpinTime - new Date().getTime();
+                const hours = Math.floor(remainingTime / (1000 * 60 * 60));
+                const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+                spinButton.textContent = 'WAIT...';
+                spinButton.disabled = true;
+                messageElement.textContent = `Agli Spin: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                setTimeout(updateSpinButtonState, 1000);
+            }
+        }
+
+        // --- Wheel Initialization ---
+        function createWheel() {
+            wheel.innerHTML = ""; // Clear wheel first
+            prizes.forEach((prize, index) => {
+                const segment = document.createElement('div');
+                segment.classList.add('segment');
+                segment.style.backgroundColor = prize.color;
+                segment.style.transform = `rotate(${index * segmentAngle}deg)`;
+                const text = document.createElement('span');
+                text.classList.add('segment-text');
+                text.textContent = prize.name;
+                segment.appendChild(text);
+                wheel.appendChild(segment);
+            });
+        }
+
+        // Weighted random selection
+        function getWeightedRandomPrizeIndex() {
+            let totalWeight = prizes.reduce((sum, p) => sum + p.weight, 0);
+            let randomNum = Math.random() * totalWeight;
+            for (let i = 0; i < prizes.length; i++) {
+                randomNum -= prizes[i].weight;
+                if (randomNum < 0) {
+                    return i;
+                }
+            }
+        }
+
+        // --- Spin Event Listener ---
+        spinButton.addEventListener('click', () => {
+            if (!canSpin() || spinButton.disabled) return;
+            spinButton.disabled = true;
+            messageElement.textContent = 'Mining Booster Wheel is spinning... 🚀';
+            const winningIndex = getWeightedRandomPrizeIndex();
+            const winningPrize = prizes[winningIndex];
+            const extraRotations = 8;
+            const offset = segmentAngle / 2;
+            const totalRotation = (360 * extraRotations) + (360 - (winningIndex * segmentAngle) - offset);
+            wheel.style.transform = `rotate(${totalRotation}deg)`;
+            setTimeout(() => {
+                if (winningPrize.value > 0) {
+                    addCoins(winningPrize.value); // ONLY home tokens!
+                    messageElement.textContent = `✅ Zordaar! Aapne jeeta: ${winningPrize.name}! Reward home page tokens me add ho gaya.`;
+                } else {
+                    messageElement.textContent = `⭐ Shabaash! Aapne jeeta: ${winningPrize.name}!`;
+                }
+                localStorage.setItem(LAST_SPIN_KEY, new Date().getTime());
+                wheel.style.transform = `rotate(0deg)`;
+                updateSpinButtonState();
+            }, 5000);
+        });
+
+        // --- Initial Load ---
+        createWheel();
+        updateSpinButtonState();
+    </script>
+</body>
+</html>
