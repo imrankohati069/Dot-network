@@ -154,27 +154,21 @@
     return `🚀 Join Chain65 and earn rewards! 💰 ${referralUrl}`;
   }
 
-  // WhatsApp native sharing
-  function shareWhatsApp() {
-    if (navigator.userAgent.match(/Android/i)) {
-      window.location.href = `intent://send?text=${encodeURIComponent(getShareMessage())}#Intent;scheme=whatsapp;package=com.whatsapp;end`;
-    } else {
-      window.location.href = `whatsapp://send?text=${encodeURIComponent(getShareMessage())}`;
-    }
-  }
-  // Telegram native sharing
-  function shareTelegram() {
-    window.location.href = `tg://msg?text=${encodeURIComponent(getShareMessage())}`;
-    setTimeout(function() {
-      window.open(`https://t.me/share/url?url=${encodeURIComponent(referralUrl)}&text=${encodeURIComponent('🚀 Join Chain65 and earn rewards!')}`, "_blank");
-    }, 400);
-  }
-  // Facebook native sharing (may open app, may fallback to browser if app not available)
-  function shareFacebook() {
-    window.location.href = `fb://facewebmodal/f?href=${encodeURIComponent(referralUrl)}`;
-    setTimeout(function() {
-      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}`, "_blank");
-    }, 400);
+ <p class="note"WhatsApp/Facebook sharing may not work inside Telegram app. Open in browser for full features.</p>
+    </div>
+
+    <div class="share-buttons">
+      <div class="share-btn whatsapp" onclick="shareWhatsApp()">
+        <i class="fab fa-whatsapp"></i> WhatsApp
+      </div>
+      <div class="share-btn telegram" onclick="shareTelegram()">
+        <i class="fab fa-telegram"></i> Telegram
+      </div>
+      <div class="share-btn facebook" onclick="shareFacebook()">
+        <i class="fab fa-facebook"></i> Facebook
+      </div>
+    </div>
+  </div>
   }
   function copyReferralLink() {
     navigator.clipboard.writeText(referralUrl)
