@@ -148,30 +148,40 @@
   const referralBase = "https://imrankohati069.github.io/Dot-network/invite-friends.html";
   const referralUrl = `${referralBase}?ref=${userRefCode}`;
 
- function shareWhatsApp() {
+function openAppLink(appUrl, webUrl) {
+  try {
+    // Try native app first
+    window.location.href = appUrl;
+
+    // Fallback to browser after delay
+    setTimeout(() => {
+      window.location.href = webUrl;
+    }, 1000);
+  } catch (e) {
+    // If WebView blocks location change, open in new tab (browser)
+    window.open(webUrl, '_blank');
+  }
+}
+
+function shareWhatsApp() {
   const message = encodeURIComponent(`🚀 Join Chain65 and earn rewards!\n${referralUrl}`);
-  const appUrl = `whatsapp://send?text=${message}`;
+  const appUrl = `intent://send?text=${message}#Intent;scheme=whatsapp;package=com.whatsapp;end`;
   const webUrl = `https://api.whatsapp.com/send?text=${message}`;
-  // try opening native app; if it fails, open web version
-  window.location.href = appUrl;
-  setTimeout(() => { window.location.href = webUrl; }, 1500);
+  openAppLink(appUrl, webUrl);
 }
 
 function shareTelegram() {
   const message = encodeURIComponent(`🚀 Join Chain65 and earn rewards!\n${referralUrl}`);
-  const appUrl = `tg://msg?text=${message}`;
+  const appUrl = `intent://send?text=${message}#Intent;scheme=tg;package=org.telegram.messenger;end`;
   const webUrl = `https://t.me/share/url?url=${referralUrl}&text=${message}`;
-  window.location.href = appUrl;
-  setTimeout(() => { window.location.href = webUrl; }, 1500);
+  openAppLink(appUrl, webUrl);
 }
 
 function shareFacebook() {
-  const fbAppUrl = `fb://facewebmodal/f?href=https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}`;
-  const fbWebUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}`;
-  window.location.href = fbAppUrl;
-  setTimeout(() => { window.location.href = fbWebUrl; }, 1500);
+  const appUrl = `intent://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}#Intent;scheme=https;package=com.facebook.katana;end`;
+  const webUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}`;
+  openAppLink(appUrl, webUrl);
 }
-
 
   function copyReferralLink() {
     navigator.clipboard.writeText(referralUrl)
