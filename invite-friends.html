@@ -96,9 +96,7 @@
   </style>
 </head>
 <body>
-  <div class="header">
-    <!-- You can place your logo or user id here if needed! -->
-  </div>
+  <div class="header"></div>
 
   <div class="sections">
     <div class="invite-section">
@@ -114,8 +112,6 @@
 
     <p>Referrals: <span id="refCount">0</span></p>
   </div>
-
-  <div class="popup" id="popup">Link Copied!</div>
 
   <div class="footer">
     <div class="nav-item">
@@ -151,17 +147,15 @@
   const referralBase = "https://imrankohati069.github.io/Dot-network/invite-friends.html";
   const referralUrl = `${referralBase}?ref=${userRefCode}`;
 
+  // Mobile-friendly sharing
   function shareWhatsApp() {
-    const message = `🚀 Join Chain65 and earn rewards!\n${referralUrl}`;
-    alert("WhatsApp sharing not available in browser, use copy link.");
+    window.open(`https://wa.me/?text=${encodeURIComponent('🚀 Join Chain65 and earn rewards! '+referralUrl)}`, "_blank");
   }
   function shareTelegram() {
-    const message = `🚀 Join Chain65 and earn rewards!\n${referralUrl}`;
-    alert("Telegram sharing not available in browser, use copy link.");
+    window.open(`https://t.me/share/url?url=${encodeURIComponent(referralUrl)}&text=${encodeURIComponent('🚀 Join Chain65 and earn rewards!')}`, "_blank");
   }
   function shareFacebook() {
-    const message = `🚀 Join Chain65 and earn rewards!\n${referralUrl}`;
-    alert("Facebook sharing not available in browser, use copy link.");
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}`, "_blank");
   }
   function copyReferralLink() {
     navigator.clipboard.writeText(referralUrl)
@@ -169,36 +163,55 @@
       .catch(() => alert('Failed to copy link. Try manually.'));
   }
   function showPopup() {
-    const popup = document.getElementById("popup");
-    popup.style.display = "block";
-    setTimeout(() => { popup.style.display = "none"; }, 2000);
+    if (!window.matchMedia('(display-mode: standalone)').matches) {
+      // Only show pop-up as visual feedback (no alerts!)
+      const popup = document.getElementById("popup");
+      popup.style.display = "block";
+      setTimeout(() => { popup.style.display = "none"; }, 2000);
+    }
   }
 
+  // --- Referral Reward Logic ---
   document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(window.location.search);
     const ref = urlParams.get("ref");
 
-    // If new user comes via referral, give them token, and increase referrer's count (local only).
+    // If new user comes via referral, give BOTH users a token, and increase referrer's count (local only).
     if (ref && ref !== userRefCode && !localStorage.getItem("refClaimed_" + ref)) {
-      // Add 1 token to referred user
+      // 1. Add 1 token for referred user
       let currentTokens = parseFloat(localStorage.getItem("coinBalance")) || 0;
       currentTokens += 1;
       localStorage.setItem("coinBalance", currentTokens);
 
-      // Increment referrer's referral count (locally)
+      // 2. Add 1 token for the referrer (reward will show when referrer visits home page on their device)
+      let refRewardKey = "coinBalance_" + ref;
+      let referrerTokens = parseFloat(localStorage.getItem(refRewardKey)) || 0;
+      referrerTokens += 1;
+      localStorage.setItem(refRewardKey, referrerTokens);
+
+      // 3. Increase referral count for referrer (device-specific)
       let refCount = parseInt(localStorage.getItem("referral_count_" + ref)) || 0;
       refCount += 1;
       localStorage.setItem("referral_count_" + ref, refCount);
 
       localStorage.setItem("refClaimed_" + ref, "true");
-      alert("🎉 You received 1 bonus token from referral! Reward added to your home page tokens.");
+      // No pop-up here for mobile, just background reward
     }
 
-    // Show your own invites (referral count for YOUR code)
+    // Show user's own invites (referral count for YOUR code)
     let myReferralCount = parseInt(localStorage.getItem("referral_count_" + userRefCode)) || 0;
     document.getElementById("refCount").innerText = myReferralCount;
+
+    // On referrer's own device: Add cross-device bonus if exists
+    let referrerBonus = parseFloat(localStorage.getItem("coinBalance_" + userRefCode)) || 0;
+    if (referrerBonus > 0) {
+      let homeTokens = parseFloat(localStorage.getItem("coinBalance")) || 0;
+      homeTokens += referrerBonus;
+      localStorage.setItem("coinBalance", homeTokens);
+      localStorage.removeItem("coinBalance_" + userRefCode); // Remove after claiming
+      // Optionally show a message/animation to notify bonus received
+    }
   });
 </script>
-
 </body>
 </html>
