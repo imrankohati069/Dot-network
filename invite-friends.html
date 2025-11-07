@@ -149,22 +149,21 @@
   const referralUrl = `${referralBase}?ref=${userRefCode}`;
 
   function shareWhatsApp() {
-    const message = encodeURIComponent(`🚀 Join Chain65 and earn rewards!\n${referralUrl}`);
-    const url = `whatsapp://send?text=${message}`;
-    window.location.href = url;
-  }
+  const message = encodeURIComponent(`🚀 Join Chain65 and earn rewards!\n${referralUrl}`);
+  const whatsappUrl = `https://api.whatsapp.com/send?text=${message}`;
+  window.open(whatsappUrl, '_blank');
+}
 
-  function shareTelegram() {
-    const message = encodeURIComponent(`🚀 Join Chain65 and earn rewards!\n${referralUrl}`);
-    const url = `tg://msg?text=${message}`;
-    window.location.href = url;
-  }
+function shareTelegram() {
+  const message = encodeURIComponent(`🚀 Join Chain65 and earn rewards!\n${referralUrl}`);
+  const telegramUrl = `https://t.me/share/url?url=${referralUrl}&text=${message}`;
+  window.open(telegramUrl, '_blank');
+}
 
-  function shareFacebook() {
-    const message = encodeURIComponent(`🚀 Join Chain65 and earn rewards!\n${referralUrl}`);
-    const url = `fb://facewebmodal/f?href=https://www.facebook.com/sharer/sharer.php?u=${referralUrl}&quote=${message}`;
-    window.location.href = url;
-  }
+function shareFacebook() {
+  const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}`;
+  window.open(fbUrl, '_blank');
+}
 
   function copyReferralLink() {
     navigator.clipboard.writeText(referralUrl)
