@@ -96,7 +96,9 @@
   </style>
 </head>
 <body>
-  <div class="header"></div>
+  <div class="header">
+    <!-- You can place your logo or user id here if needed! -->
+  </div>
 
   <div class="sections">
     <div class="invite-section">
@@ -139,56 +141,35 @@
   </div>
 
 <script>
+  // Generate unique referral code for each user
   let userRefCode = localStorage.getItem("userRefCode");
   if (!userRefCode) {
     userRefCode = "ref_" + Math.random().toString(36).substring(2, 10);
     localStorage.setItem("userRefCode", userRefCode);
   }
-
+  // Use your actual public invite-friends.html URL below:
   const referralBase = "https://imrankohati069.github.io/Dot-network/invite-friends.html";
   const referralUrl = `${referralBase}?ref=${userRefCode}`;
 
-function openAppLink(appUrl, webUrl) {
-  try {
-    // Try native app first
-    window.location.href = appUrl;
+   window.shareWhatsApp = function () {
+      const fullMessage = `🚀 Join Chain65 and earn rewards! 💰 ${referralBase}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(fullMessage)}`, "_blank");
+    };
 
-    // Fallback to browser after delay
-    setTimeout(() => {
-      window.location.href = webUrl;
-    }, 1000);
-  } catch (e) {
-    // If WebView blocks location change, open in new tab (browser)
-    window.open(webUrl, '_blank');
-  }
-}
+    window.shareTelegram = function () {
+      const telegramShareURL = `https://t.me/share/url?url=${encodeURIComponent(referralBase)}&text=${encodeURIComponent("🚀 Join Chain65 and earn rewards! 💰")}`;
+      window.open(telegramShareURL, "_blank");
+    };
 
-function shareWhatsApp() {
-  const message = encodeURIComponent(`🚀 Join Chain65 and earn rewards!\n${referralUrl}`);
-  const appUrl = `intent://send?text=${message}#Intent;scheme=whatsapp;package=com.whatsapp;end`;
-  const webUrl = `https://api.whatsapp.com/send?text=${message}`;
-  openAppLink(appUrl, webUrl);
-}
-
-function shareTelegram() {
-  const message = encodeURIComponent(`🚀 Join Chain65 and earn rewards!\n${referralUrl}`);
-  const appUrl = `intent://send?text=${message}#Intent;scheme=tg;package=org.telegram.messenger;end`;
-  const webUrl = `https://t.me/share/url?url=${referralUrl}&text=${message}`;
-  openAppLink(appUrl, webUrl);
-}
-
-function shareFacebook() {
-  const appUrl = `intent://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}#Intent;scheme=https;package=com.facebook.katana;end`;
-  const webUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}`;
-  openAppLink(appUrl, webUrl);
-}
-
+    window.shareFacebook = function () {
+      const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralBase)}`;
+      window.open(fbUrl, "_blank");
+    };
   function copyReferralLink() {
     navigator.clipboard.writeText(referralUrl)
       .then(() => showPopup())
-      .catch(() => console.log('Copy failed'));
+      .catch(() => alert('Failed to copy link. Try manually.'));
   }
-
   function showPopup() {
     const popup = document.getElementById("popup");
     popup.style.display = "block";
@@ -199,19 +180,23 @@ function shareFacebook() {
     const urlParams = new URLSearchParams(window.location.search);
     const ref = urlParams.get("ref");
 
+    // If new user comes via referral, give them token, and increase referrer's count (local only).
     if (ref && ref !== userRefCode && !localStorage.getItem("refClaimed_" + ref)) {
+      // Add 1 token to referred user
       let currentTokens = parseFloat(localStorage.getItem("coinBalance")) || 0;
       currentTokens += 1;
       localStorage.setItem("coinBalance", currentTokens);
 
+      // Increment referrer's referral count (locally)
       let refCount = parseInt(localStorage.getItem("referral_count_" + ref)) || 0;
       refCount += 1;
       localStorage.setItem("referral_count_" + ref, refCount);
 
       localStorage.setItem("refClaimed_" + ref, "true");
-      showPopup();
+      alert("🎉 You received 1 bonus token from referral! Reward added to your home page tokens.");
     }
 
+    // Show your own invites (referral count for YOUR code)
     let myReferralCount = parseInt(localStorage.getItem("referral_count_" + userRefCode)) || 0;
     document.getElementById("refCount").innerText = myReferralCount;
   });
