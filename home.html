@@ -6,39 +6,32 @@
   <title>Chain65</title>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <link href="https://fonts.cdnfonts.com/css/digital-7" rel="stylesheet">
-
   <style>
-  body {
-  font-family: 'Arial', sans-serif;
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  color: white;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: hidden;
-  background-color: #001d17;
-  background-image:
-    radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
-    radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
-    linear-gradient(180deg, #0e574a 0%, #001a16 100%),
-    repeating-linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.02) 0px,
-      rgba(255, 255, 255, 0.02) 2px,
-      transparent 2px,
-      transparent 10px
-    );
-  background-blend-mode: overlay, overlay, normal, overlay;
-}
-
-
-
-
-
-
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      color: white;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+      background-color: #001d17;
+      background-image:
+        radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
+        radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
+        linear-gradient(180deg, #0e574a 0%, #001a16 100%),
+        repeating-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.02) 0px,
+          rgba(255, 255, 255, 0.02) 2px,
+          transparent 2px,
+          transparent 10px
+        );
+      background-blend-mode: overlay, overlay, normal, overlay;
+    }
     .header {
       position: fixed;
       top: 0;
@@ -48,71 +41,65 @@
       justify-content: space-between;
       align-items: center;
       background-color: #001d17;
-  background-image:
-    radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
-    radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
-    linear-gradient(180deg, #0e574a 0%, #001a16 100%),
-    repeating-linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.02) 0px,
-      rgba(255, 255, 255, 0.02) 2px,
-      transparent 2px,
-      transparent 10px
-    );
-  background-blend-mode: overlay, overlay, normal, overlay;
-
+      background-image:
+        radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
+        radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
+        linear-gradient(180deg, #0e574a 0%, #001a16 100%),
+        repeating-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.02) 0px,
+          rgba(255, 255, 255, 0.02) 2px,
+          transparent 2px,
+          transparent 10px
+        );
+      background-blend-mode: overlay, overlay, normal, overlay;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgb(255, 255, 255);
     }
-
     .coins {
       margin-top: 100px;
       font-size: 40px;
       font-weight: bold;
     }
     .tokenLabel {
-  font-size: 14px;
-   background-color: #001d17;
-  background-image:
-    radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
-    radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
-    linear-gradient(180deg, #0e574a 0%, #001a16 100%),
-    repeating-linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.02) 0px,
-      rgba(255, 255, 255, 0.02) 2px,
-      transparent 2px,
-      transparent 10px
-    );
-  background-blend-mode: overlay, overlay, normal, overlay;
-
-  color: #ffffff;
-  padding: 10px 20px;
-  border-radius: 10px;
-  margin-top: 10px;
-  display: inline-block;
-  letter-spacing: 2px;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.993);
-}
-
-
+      font-size: 14px;
+      background-color: #001d17;
+      background-image:
+        radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
+        radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
+        linear-gradient(180deg, #0e574a 0%, #001a16 100%),
+        repeating-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.02) 0px,
+          rgba(255, 255, 255, 0.02) 2px,
+          transparent 2px,
+          transparent 10px
+        );
+      background-blend-mode: overlay, overlay, normal, overlay;
+      color: #ffffff;
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin-top: 10px;
+      display: inline-block;
+      letter-spacing: 2px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.993);
+    }
     .circle-mine {
       width: 200px;
       height: 200px;
-       background-color: #001d17;
-  background-image:
-    radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
-    radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
-    linear-gradient(180deg, #0e574a 0%, #001a16 100%),
-    repeating-linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.02) 0px,
-      rgba(255, 255, 255, 0.02) 2px,
-      transparent 2px,
-      transparent 10px
-    );
-  background-blend-mode: overlay, overlay, normal, overlay;
-
+      background-color: #001d17;
+      background-image:
+        radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
+        radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
+        linear-gradient(180deg, #0e574a 0%, #001a16 100%),
+        repeating-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.02) 0px,
+          rgba(255, 255, 255, 0.02) 2px,
+          transparent 2px,
+          transparent 10px
+        );
+      background-blend-mode: overlay, overlay, normal, overlay;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -124,87 +111,78 @@
       cursor: pointer;
       flex-direction: column;
     }
-
     .blinking {
       animation: blink 1s infinite;
     }
-
     @keyframes blink {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.4; }
     }
     #timerText {
-  font-size: 24px;
-   background-color: #001d17;
-  background-image:
-    radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
-    radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
-    linear-gradient(180deg, #0e574a 0%, #001a16 100%),
-    repeating-linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.02) 0px,
-      rgba(255, 255, 255, 0.02) 2px,
-      transparent 2px,
-      transparent 10px
-    );
-  background-blend-mode: overlay, overlay, normal, overlay;
-
-  color:rgba(255, 255, 255, 0.993);
-  padding: 10px 20px;
-  border-radius: 10px;
-  margin-top: 10px;
-  display: inline-block;
-  letter-spacing: 2px;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.993);
-}
-#coinBalance {
-  font-size: 24px;
-  background-color: #001d17;
-  background-image:
-    radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
-    radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
-    linear-gradient(180deg, #0e574a 0%, #001a16 100%),
-    repeating-linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.02) 0px,
-      rgba(255, 255, 255, 0.02) 2px,
-      transparent 2px,
-      transparent 10px
-    );
-  background-blend-mode: overlay, overlay, normal, overlay;
-
-  color: rgb(255, 255, 255);
-  padding: 10px 20px;
-  border-radius: 10px;
-  display: inline-block;
-  letter-spacing: 2px;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.993);
-}
-
-
-
+      font-size: 24px;
+      background-color: #001d17;
+      background-image:
+        radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
+        radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
+        linear-gradient(180deg, #0e574a 0%, #001a16 100%),
+        repeating-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.02) 0px,
+          rgba(255, 255, 255, 0.02) 2px,
+          transparent 2px,
+          transparent 10px
+        );
+      background-blend-mode: overlay, overlay, normal, overlay;
+      color:rgba(255, 255, 255, 0.993);
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin-top: 10px;
+      display: inline-block;
+      letter-spacing: 2px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.993);
+    }
+    #coinBalance {
+      font-size: 24px;
+      background-color: #001d17;
+      background-image:
+        radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
+        radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
+        linear-gradient(180deg, #0e574a 0%, #001a16 100%),
+        repeating-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.02) 0px,
+          rgba(255, 255, 255, 0.02) 2px,
+          transparent 2px,
+          transparent 10px
+        );
+      background-blend-mode: overlay, overlay, normal, overlay;
+      color: rgb(255, 255, 255);
+      padding: 10px 20px;
+      border-radius: 10px;
+      display: inline-block;
+      letter-spacing: 2px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.993);
+    }
     .popup-content {
       background-color: #001d17;
-  background-image:
-    radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
-    radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
-    linear-gradient(180deg, #0e574a 0%, #001a16 100%),
-    repeating-linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.02) 0px,
-      rgba(255, 255, 255, 0.02) 2px,
-      transparent 2px,
-      transparent 10px
-    );
-  background-blend-mode: overlay, overlay, normal, overlay;
-
+      background-image:
+        radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
+        radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
+        linear-gradient(180deg, #0e574a 0%, #001a16 100%),
+        repeating-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.02) 0px,
+          rgba(255, 255, 255, 0.02) 2px,
+          transparent 2px,
+          transparent 10px
+        );
+      background-blend-mode: overlay, overlay, normal, overlay;
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(255, 255, 255, 0.993);
       max-width: 90%;
       text-align: left;
     }
-
     .popup-content button {
       margin-top: 15px;
       background: rgba(0, 0, 0, 0.993);
@@ -213,48 +191,44 @@
       color: rgb(255, 255, 255);
       cursor: pointer;
     }
-
     .popup {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-       background-color: #001d17;
-  background-image:
-    radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
-    radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
-    linear-gradient(180deg, #0e574a 0%, #001a16 100%),
-    repeating-linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.02) 0px,
-      rgba(255, 255, 255, 0.02) 2px,
-      transparent 2px,
-      transparent 10px
-    );
-  background-blend-mode: overlay, overlay, normal, overlay;
-
+      background-color: #001d17;
+      background-image:
+        radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
+        radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
+        linear-gradient(180deg, #0e574a 0%, #001a16 100%),
+        repeating-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.02) 0px,
+          rgba(255, 255, 255, 0.02) 2px,
+          transparent 2px,
+          transparent 10px
+        );
+      background-blend-mode: overlay, overlay, normal, overlay;
       display: none;
       justify-content: center;
       align-items: center;
       z-index: 999;
     }
-
     .footer {
-       background-color: #001d17;
-  background-image:
-    radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
-    radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
-    linear-gradient(180deg, #0e574a 0%, #001a16 100%),
-    repeating-linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.02) 0px,
-      rgba(255, 255, 255, 0.02) 2px,
-      transparent 2px,
-      transparent 10px
-    );
-  background-blend-mode: overlay, overlay, normal, overlay;
-
+      background-color: #001d17;
+      background-image:
+        radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
+        radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
+        linear-gradient(180deg, #0e574a 0%, #001a16 100%),
+        repeating-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.02) 0px,
+          rgba(255, 255, 255, 0.02) 2px,
+          transparent 2px,
+          transparent 10px
+        );
+      background-blend-mode: overlay, overlay, normal, overlay;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(255, 255, 255, 0.993);
       padding: 10px 0;
@@ -264,29 +238,26 @@
       display: flex;
       justify-content: space-around;
     }
-
     .footer .nav-item {
-       background-color: #001d17;
-  background-image:
-    radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
-    radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
-    linear-gradient(180deg, #0e574a 0%, #001a16 100%),
-    repeating-linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.02) 0px,
-      rgba(255, 255, 255, 0.02) 2px,
-      transparent 2px,
-      transparent 10px
-    );
-  background-blend-mode: overlay, overlay, normal, overlay;
-
+      background-color: #001d17;
+      background-image:
+        radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
+        radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
+        linear-gradient(180deg, #0e574a 0%, #001a16 100%),
+        repeating-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.02) 0px,
+          rgba(255, 255, 255, 0.02) 2px,
+          transparent 2px,
+          transparent 10px
+        );
+      background-blend-mode: overlay, overlay, normal, overlay;
       padding: 8px;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(255, 255, 255, 0.993);
       text-align: center;
       width: 80px;
     }
-
     .footer a {
       text-decoration: none;
       color: white;
@@ -295,68 +266,59 @@
       flex-direction: column;
       align-items: center;
     }
-
     .footer i {
       font-size: 12px;
       margin-top: 5px;
     }
-
-   .extra-buttons {
-  margin-top: 60px;
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  flex-wrap: wrap;
-}
-
-.glow-btn {
-  background-color: #001d17;
-  background-image:
-    radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
-    radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
-    linear-gradient(180deg, #0e574a 0%, #001a16 100%),
-    repeating-linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.02) 0px,
-      rgba(255, 255, 255, 0.02) 2px,
-      transparent 2px,
-      transparent 10px
-    );
-  background-blend-mode: overlay, overlay, normal, overlay;
-
-  padding: 8px 14px;
-  border-radius: 10px;
-  color: white;
-  font-size: 14px;
-  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.993);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 90px;
-  text-align: center;
-}
-
-.glow-btn:hover {
-  background: rgba(0, 0, 0, 0.3);
-  color: #ffffff;
-}
-
-
-
+    .extra-buttons {
+      margin-top: 60px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+    .glow-btn {
+      background-color: #001d17;
+      background-image:
+        radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
+        radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
+        linear-gradient(180deg, #0e574a 0%, #001a16 100%),
+        repeating-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.02) 0px,
+          rgba(255, 255, 255, 0.02) 2px,
+          transparent 2px,
+          transparent 10px
+        );
+      background-blend-mode: overlay, overlay, normal, overlay;
+      padding: 8px 14px;
+      border-radius: 10px;
+      color: white;
+      font-size: 14px;
+      box-shadow: 0 4px 8px rgba(255, 255, 255, 0.993);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 90px;
+      text-align: center;
+    }
+    .glow-btn:hover {
+      background: rgba(0, 0, 0, 0.3);
+      color: #ffffff;
+    }
     .coming-soon {
       background-color: #001d17;
-  background-image:
-    radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
-    radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
-    linear-gradient(180deg, #0e574a 0%, #001a16 100%),
-    repeating-linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.02) 0px,
-      rgba(255, 255, 255, 0.02) 2px,
-      transparent 2px,
-      transparent 10px
-    );
-  background-blend-mode: overlay, overlay, normal, overlay;
-
+      background-image:
+        radial-gradient(circle at 30% 20%, rgba(0, 255, 179, 0.15), transparent 60%),
+        radial-gradient(circle at 80% 10%, rgba(0, 200, 150, 0.08), transparent 60%),
+        linear-gradient(180deg, #0e574a 0%, #001a16 100%),
+        repeating-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.02) 0px,
+          rgba(255, 255, 255, 0.02) 2px,
+          transparent 2px,
+          transparent 10px
+        );
+      background-blend-mode: overlay, overlay, normal, overlay;
       padding: 8px 12px;
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(255, 255, 255, 0.993);
@@ -368,23 +330,18 @@
   <div class="header">
     <div id="username" class="user-id"></div>
   </div>
-
   <div class="coins">
-  <span id="coinBalance">0</span> <span class="tokenLabel">C65coin</span>
-</div>
-
-
+    <span id="coinBalance">0</span> <span class="tokenLabel">C65coin</span>
+  </div>
   <div id="mineCircle" class="circle-mine" onclick="startMining()">
     <div id="mineText">Tap to Mine</div>
     <div id="timerText"></div>
   </div>
-<div class="extra-buttons">
-  <div class="glow-btn" onclick="togglePopup('aboutPopup')">About Us</div>
-  <div class="glow-btn" onclick="togglePopup('supportPopup')">Support</div>
-  <div class="glow-btn" onclick="togglePopup('comingSoonPopup')">Wallet</div>
-</div>
-
-
+  <div class="extra-buttons">
+    <div class="glow-btn" onclick="togglePopup('aboutPopup')">About Us</div>
+    <div class="glow-btn" onclick="togglePopup('supportPopup')">Support</div>
+    <div class="glow-btn" onclick="togglePopup('comingSoonPopup')">Wallet</div>
+  </div>
   <div class="popup" id="aboutPopup">
     <div class="popup-content">
       <h3>About Chain65</h3>
@@ -392,28 +349,34 @@
       <button onclick="togglePopup('aboutPopup')">Close</button>
     </div>
   </div>
-
   <div class="popup" id="supportPopup">
     <div class="popup-content">
       <h3>Support</h3>
       <p>If you have questions, contact us at:</p>
-      <p><strong>Email:</strong> <a style="color:orange" href="https://mail.google.com/mail/?view=cm&fs=1&to=papanetworkcontact@gmail.com" target="_blank" style="color:orange">chain65contact@gmail.com</a>
+      <p>
+        <strong>Email:</strong> 
+        <a style="color:orange" href="https://mail.google.com/mail/?view=cm&fs=1&to=papanetworkcontact@gmail.com" target="_blank">
+          chain65contact@gmail.com
+        </a>
       </p>
       <button onclick="togglePopup('supportPopup')">Close</button>
     </div>
   </div>
-
   <div class="popup" id="comingSoonPopup">
     <div class="popup-content">
       <p>Coming Soon</p>
       <button onclick="togglePopup('comingSoonPopup')">Close</button>
     </div>
   </div>
-
   <div class="footer">
     <div class="nav-item">
       <a href="home.html">
         <i class="fas fa-home"></i> Home
+      </a>
+    </div>
+    <div class="nav-item">
+      <a href="spin.html">
+        <i class="fas fa-spin"></i> Spin
       </a>
     </div>
     <div class="nav-item">
@@ -429,94 +392,119 @@
   </div>
 
   <script>
-let mining = false;
-let coinBalance = parseFloat(localStorage.getItem("coinBalance")) || 0;
-let miningEnd = parseInt(localStorage.getItem("miningEnd")) || 0;
-let miningInterval;
+    const MINING_DURATION_MS = 86400000; // 24 hours
+    const MINING_RATE_PER_SECOND = 0.00001; // Earn rate (per second)
 
-function updateBalance() {
-  document.getElementById("coinBalance").innerText = Number(coinBalance).toFixed(5);
-}
+    let mining = false;
+    let coinBalance = parseFloat(localStorage.getItem("coinBalance")) || 0;
+    let miningEnd = parseInt(localStorage.getItem("miningEnd")) || 0;
+    let miningInterval;
 
-function formatTime(ms) {
-  let totalSeconds = Math.floor(ms / 1000);
-  let hours = Math.floor(totalSeconds / 3600);
-  let minutes = Math.floor((totalSeconds % 3600) / 60);
-  let seconds = totalSeconds % 60;
-  return `${hours.toString().padStart(2, '0')}:${minutes
-    .toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-}
+    function updateBalance() {
+      coinBalance = parseFloat(coinBalance.toFixed(5));
+      document.getElementById("coinBalance").innerText = coinBalance.toFixed(5);
+      localStorage.setItem("coinBalance", coinBalance);
+    }
 
-function runMiningTimer() {
-  mining = true;
-  document.getElementById("mineCircle").classList.add("blinking");
-  document.getElementById("mineText").innerText = "Mining...";
+    function formatTime(ms) {
+      if (ms < 0) ms = 0;
+      let totalSeconds = Math.floor(ms / 1000);
+      let hours = Math.floor(totalSeconds / 3600);
+      let minutes = Math.floor((totalSeconds % 3600) / 60);
+      let seconds = totalSeconds % 60;
+      return `${hours.toString().padStart(2, '0')}:${minutes
+        .toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
 
-  miningInterval = setInterval(() => {
-    const now = Date.now();
-    const remaining = miningEnd - now;
+    function calculateAndAddMinedCoins() {
+      const now = Date.now();
+      const lastUpdateTime = parseInt(localStorage.getItem("lastUpdate")) || now;
+      if (now >= miningEnd) {
+        const timeToMine = miningEnd - lastUpdateTime;
+        if (timeToMine > 0) {
+          const newlyEarnedCoins = (timeToMine / 1000) * MINING_RATE_PER_SECOND;
+          coinBalance += newlyEarnedCoins;
+          updateBalance();
+        }
+        stopMining(true); // Only reset mining, coins saved!
+        return false;
+      } else {
+        const timePassedSinceLastUpdate = now - lastUpdateTime;
+        if (timePassedSinceLastUpdate > 1000) {
+          const newlyEarnedCoins = (timePassedSinceLastUpdate / 1000) * MINING_RATE_PER_SECOND;
+          coinBalance += newlyEarnedCoins;
+          updateBalance();
+        }
+        localStorage.setItem("lastUpdate", now);
+        return true;
+      }
+    }
 
-    if (remaining <= 0) {
+    function runMiningTimer() {
+      if (miningInterval) clearInterval(miningInterval);
+
+      mining = true;
+      document.getElementById("mineCircle").classList.add("blinking");
+      document.getElementById("mineText").innerText = "Mining...";
+
+      miningInterval = setInterval(() => {
+        const now = Date.now();
+        const remaining = miningEnd - now;
+        if (remaining <= 0) {
+          calculateAndAddMinedCoins();
+          stopMining(true);
+        } else {
+          document.getElementById("timerText").innerText = formatTime(remaining);
+          coinBalance += MINING_RATE_PER_SECOND;
+          updateBalance();
+          localStorage.setItem("lastUpdate", now);
+        }
+      }, 1000);
+    }
+
+    function stopMining(finished) {
       clearInterval(miningInterval);
       mining = false;
       document.getElementById("mineCircle").classList.remove("blinking");
       document.getElementById("mineText").innerText = "Tap to Mine";
-      document.getElementById("timerText").innerText = "";
+      document.getElementById("timerText").innerText = finished ? "CYCLE ENDED" : "";
       localStorage.removeItem("miningEnd");
       localStorage.removeItem("lastUpdate");
-      return;
+      // NOTE: coinBalance is safe, don't touch it here
     }
 
-    const lastUpdate = parseInt(localStorage.getItem("lastUpdate")) || now;
-    const secondsPassed = Math.floor((now - lastUpdate) / 1000);
-    if (secondsPassed >= 1) {
-      coinBalance += 0.00001 * secondsPassed;
-      coinBalance = parseFloat(coinBalance.toFixed(5));
-      localStorage.setItem("coinBalance", coinBalance);
+    function startMining() {
+      const now = Date.now();
+      if (now < miningEnd) {
+        alert("Mining already in progress. Please wait for the current cycle to end.");
+        return;
+      }
+      miningEnd = now + MINING_DURATION_MS;
+      localStorage.setItem("miningEnd", miningEnd);
       localStorage.setItem("lastUpdate", now);
-      updateBalance();
+      runMiningTimer();
     }
 
-    document.getElementById("timerText").innerText = formatTime(remaining);
-  }, 1000);
-}
+    function resumeMiningIfActive() {
+      if (miningEnd > 0) {
+        const isActive = calculateAndAddMinedCoins();
+        if (isActive) {
+          runMiningTimer();
+        }
+      } else {
+        stopMining(false);
+      }
+    }
 
-function startMining() {
-  if (mining) return;
+    function togglePopup(id) {
+      const popup = document.getElementById(id);
+      popup.style.display = popup.style.display === 'flex' ? 'none' : 'flex';
+    }
 
-  const now = Date.now();
-  if (now < miningEnd) {
-    alert("Mining already in progress. Please wait.");
-    return;
-  }
-
-  miningEnd = now + 86400000; // 24 hours
-  localStorage.setItem("miningEnd", miningEnd);
-  localStorage.setItem("lastUpdate", now);
-  runMiningTimer();
-}
-
-function resumeMiningIfActive() {
-  const now = Date.now();
-  if (now < miningEnd) {
-    runMiningTimer();
-  } else {
-    localStorage.removeItem("miningEnd");
-    localStorage.removeItem("lastUpdate");
-  }
-}
-
-
-function togglePopup(id) {
-  const popup = document.getElementById(id);
-  popup.style.display = popup.style.display === 'flex' ? 'none' : 'flex';
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  coinBalance = parseFloat(localStorage.getItem("coinBalance")) || 0;
-  updateBalance();
-  resumeMiningIfActive();
-});
-</script>
+    document.addEventListener("DOMContentLoaded", () => {
+      updateBalance();
+      resumeMiningIfActive();
+    });
+  </script>
 </body>
 </html>
