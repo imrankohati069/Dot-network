@@ -148,22 +148,30 @@
   const referralBase = "https://imrankohati069.github.io/Dot-network/invite-friends.html";
   const referralUrl = `${referralBase}?ref=${userRefCode}`;
 
-  function shareWhatsApp() {
+ function shareWhatsApp() {
   const message = encodeURIComponent(`🚀 Join Chain65 and earn rewards!\n${referralUrl}`);
-  const whatsappUrl = `https://api.whatsapp.com/send?text=${message}`;
-  window.open(whatsappUrl, '_blank');
+  const appUrl = `whatsapp://send?text=${message}`;
+  const webUrl = `https://api.whatsapp.com/send?text=${message}`;
+  // try opening native app; if it fails, open web version
+  window.location.href = appUrl;
+  setTimeout(() => { window.location.href = webUrl; }, 1500);
 }
 
 function shareTelegram() {
   const message = encodeURIComponent(`🚀 Join Chain65 and earn rewards!\n${referralUrl}`);
-  const telegramUrl = `https://t.me/share/url?url=${referralUrl}&text=${message}`;
-  window.open(telegramUrl, '_blank');
+  const appUrl = `tg://msg?text=${message}`;
+  const webUrl = `https://t.me/share/url?url=${referralUrl}&text=${message}`;
+  window.location.href = appUrl;
+  setTimeout(() => { window.location.href = webUrl; }, 1500);
 }
 
 function shareFacebook() {
-  const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}`;
-  window.open(fbUrl, '_blank');
+  const fbAppUrl = `fb://facewebmodal/f?href=https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}`;
+  const fbWebUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}`;
+  window.location.href = fbAppUrl;
+  setTimeout(() => { window.location.href = fbWebUrl; }, 1500);
 }
+
 
   function copyReferralLink() {
     navigator.clipboard.writeText(referralUrl)
