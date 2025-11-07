@@ -5,142 +5,42 @@
   <title>Chain65 - Friends</title>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-      color: white;
-      text-align: center;
-      background-color: #001d17;
-    }
-    .header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      padding: 2px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #001d17;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgb(255, 255, 255);
-    }
-    .sections {
-      width: 90%;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .invite-section, .copy-url-section {
-      background-color: #001d17;
-      padding: 20px;
-      margin: 10px 0;
-      border-radius: 10px;
-      width: 300px;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(255, 255, 255, 0.993);
-    }
-    button {
-      background-color: #001d17;
-      color: rgb(255, 254, 254);
-      border: none;
-      padding: 10px 20px;
-      cursor: pointer;
-      border-radius: 5px;
-      margin-bottom: 10px;
-      box-shadow: 0 4px 8px rgba(255, 255, 255, 0.993);
-    }
-    .footer {
-      background-color: #001d17;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(255, 255, 255, 0.993);
-      padding: 10px 0;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      display: flex;
-      justify-content: space-around;
-    }
-    .footer .nav-item {
-      background-color: #001d17;
-      padding: 8px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(255, 255, 255, 0.993);
-      text-align: center;
-      width: 80px;
-    }
-    .footer a {
-      text-decoration: none;
-      color: white;
-      font-size: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .footer i {
-      font-size: 12px;
-      margin-top: 5px;
-    }
-    .popup {
-      display: none;
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #001d17;
-      color: rgb(255, 255, 255);
-      padding: 10px 20px;
-      border-radius: 5px;
-      z-index: 999;
-    }
+    body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; color: white; text-align: center; background-color: #001d17; }
+    .header { position: fixed; top: 0; width: 100%; padding: 2px; display: flex; justify-content: space-between; align-items: center; background-color: #001d17; border-radius: 10px; box-shadow: 0 4px 8px rgb(255,255,255);}
+    .sections { width: 90%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+    .invite-section, .copy-url-section { background-color: #001d17; padding: 20px; margin: 10px 0; border-radius: 10px; width: 300px; text-align: center; box-shadow: 0 4px 8px rgba(255,255,255,.993);}
+    button { background-color: #001d17; color: rgb(255,254,254); border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px; margin-bottom: 10px; box-shadow: 0 4px 8px rgba(255,255,255,.993);}
+    .footer { background-color: #001d17; border-radius: 10px; box-shadow: 0 4px 8px rgba(255,255,255,.993); padding: 10px 0; position: fixed; bottom: 0; width: 100%; display: flex; justify-content: space-around;}
+    .footer .nav-item { background-color: #001d17; padding: 8px; border-radius: 10px; box-shadow: 0 4px 8px rgba(255,255,255,.993); text-align: center; width: 80px;}
+    .footer a { text-decoration: none; color: white; font-size: 12px; display: flex; flex-direction: column; align-items: center; }
+    .footer i { font-size: 12px; margin-top: 5px; }
+    .popup { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: #001d17; color: rgb(255,255,255); padding: 10px 20px; border-radius: 5px; z-index: 999;}
   </style>
 </head>
 <body>
   <div class="header"></div>
-
   <div class="sections">
     <div class="invite-section">
       <p>📢 Invite your friends via:</p>
+      <button onclick="shareNative()">🔗 Native Share (Mobile)</button><br/>
       <button onclick="shareWhatsApp()">📲 WhatsApp</button><br/>
       <button onclick="shareTelegram()">✈️ Telegram</button><br/>
       <button onclick="shareFacebook()">📘 Facebook</button>
     </div>
-
     <div class="copy-url-section">
       <button onclick="copyReferralLink()">🔗 Copy Referral URL</button>
     </div>
-
     <p>Referrals: <span id="refCount">0</span></p>
   </div>
-
   <div class="popup" id="popup">Link Copied!</div>
-
   <div class="footer">
-    <div class="nav-item">
-      <a href="home.html">
-        <i class="fas fa-home"></i> Home
-      </a>
-    </div>
-    <div class="nav-item">
-      <a href="spin.html">
-        <i class="fas fa-spin"></i> Spin
-      </a>
-    </div>
-    <div class="nav-item">
-      <a href="invite-friends.html">
-        <i class="fas fa-user-friends"></i> Friends
-      </a>
-    </div>
-    <div class="nav-item">
-      <a href="White paper.html">
-        <i class="fas fa-tasks"></i> White paper
-      </a>
-    </div>
+    <div class="nav-item"><a href="home.html"><i class="fas fa-home"></i> Home</a></div>
+    <div class="nav-item"><a href="spin.html"><i class="fas fa-spin"></i> Spin</a></div>
+    <div class="nav-item"><a href="invite-friends.html"><i class="fas fa-user-friends"></i> Friends</a></div>
+    <div class="nav-item"><a href="White paper.html"><i class="fas fa-tasks"></i> White paper</a></div>
   </div>
-
 <script>
-  // Referral code for the current user
+  // Referral Logic
   let userRefCode = localStorage.getItem("userRefCode");
   if (!userRefCode) {
     userRefCode = "ref_" + Math.random().toString(36).substring(2, 10);
@@ -148,28 +48,51 @@
   }
   const referralBase = "https://imrankohati069.github.io/Dot-network/invite-friends.html";
   const referralUrl = `${referralBase}?ref=${userRefCode}`;
-
-  // Messaging text
   function getShareMessage() {
     return `🚀 Join Chain65 and earn rewards! 💰 ${referralUrl}`;
   }
 
- <p class="note"WhatsApp/Facebook sharing may not work inside Telegram app. Open in browser for full features.</p>
-    </div>
-
-    <div class="share-buttons">
-      <div class="share-btn whatsapp" onclick="shareWhatsApp()">
-        <i class="fab fa-whatsapp"></i> WhatsApp
-      </div>
-      <div class="share-btn telegram" onclick="shareTelegram()">
-        <i class="fab fa-telegram"></i> Telegram
-      </div>
-      <div class="share-btn facebook" onclick="shareFacebook()">
-        <i class="fab fa-facebook"></i> Facebook
-      </div>
-    </div>
-  </div>
+  // 1. Web Share API (Universal/native mobile) - new button!
+  function shareNative() {
+    if (navigator.share) {
+      navigator.share({
+        title: "Chain65 Invite",
+        text: getShareMessage(),
+        url: referralUrl
+      });
+    } else {
+      copyReferralLink(); // fallback
+    }
   }
+  // 2. WhatsApp direct
+  function shareWhatsApp() {
+    const msg = getShareMessage();
+    if (/Android/i.test(navigator.userAgent)) {
+      window.location.href = `intent://send?text=${encodeURIComponent(msg)}#Intent;scheme=whatsapp;package=com.whatsapp;end`;
+    } else {
+      window.location.href = `whatsapp://send?text=${encodeURIComponent(msg)}`;
+    }
+    // Fallback if direct app doesn't work (after 500ms)
+    setTimeout(function() {
+      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+    }, 500);
+  }
+  // 3. Telegram direct
+  function shareTelegram() {
+    const msg = getShareMessage();
+    window.location.href = `tg://msg?text=${encodeURIComponent(msg)}`;
+    setTimeout(function() {
+      window.open(`https://t.me/share/url?url=${encodeURIComponent(referralUrl)}&text=${encodeURIComponent(msg)}`, "_blank");
+    }, 500);
+  }
+  // 4. Facebook direct (app may open, depends on device)
+  function shareFacebook() {
+    window.location.href = `fb://facewebmodal/f?href=${encodeURIComponent(referralUrl)}`;
+    setTimeout(function() {
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}`, "_blank");
+    }, 500);
+  }
+  // 5. Copy link
   function copyReferralLink() {
     navigator.clipboard.writeText(referralUrl)
       .then(() => showPopup())
@@ -178,33 +101,28 @@
   function showPopup() {
     const popup = document.getElementById("popup");
     popup.style.display = "block";
-    setTimeout(() => { popup.style.display = "none"; }, 1500);
+    setTimeout(() => { popup.style.display = "none"; }, 1200);
   }
 
-  // --- Referral reward logic (bonus for both sides) ---
+  // Bonus reward for both sides & referral count...
   document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(window.location.search);
-    const ref = urlParams.get("ref"); // friend's code
-
-    // Both sides: bonus (localStorage is local only, bonus for referrer when they next visit page)
+    const ref = urlParams.get("ref");
+    // Referral bonus for both: one for new user, one for referrer (when referrer visits)
     if (ref && ref !== userRefCode && !localStorage.getItem("refClaimed_" + ref)) {
-      // 1. Add bonus for referred user
+      // 1. New user bonus
       let currentTokens = parseFloat(localStorage.getItem("coinBalance")) || 0;
       currentTokens += 1;
       localStorage.setItem("coinBalance", currentTokens);
-
-      // 2. Add bonus token for referrer (store bonus for them)
+      // 2. Pending reward for referrer (to be claimed on their device)
       localStorage.setItem("friendPendingBonus_" + ref, "1");
-
-      // 3. Referral count (shown only for referrer on their device)
+      // 3. Referral count
       let refCount = parseInt(localStorage.getItem("referral_count_" + ref)) || 0;
       refCount += 1;
       localStorage.setItem("referral_count_" + ref, refCount);
-
       localStorage.setItem("refClaimed_" + ref, "true");
     }
-
-    // When referrer open their page, grant pending bonus
+    // When referrer opens their own page, grant pending bonus if available
     const pendingKey = "friendPendingBonus_" + userRefCode;
     let pendingBonus = parseInt(localStorage.getItem(pendingKey)) || 0;
     if (pendingBonus > 0) {
@@ -212,14 +130,11 @@
       homeTokens += pendingBonus;
       localStorage.setItem("coinBalance", homeTokens);
       localStorage.removeItem(pendingKey);
-      // Optionally show a UI message/animation here
     }
-
-    // Show own referral count (referrals for your code, local-only, browser)
+    // Show own referrals
     let myReferralCount = parseInt(localStorage.getItem("referral_count_" + userRefCode)) || 0;
     document.getElementById("refCount").innerText = myReferralCount;
   });
 </script>
-
 </body>
 </html>
