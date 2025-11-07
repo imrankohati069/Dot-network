@@ -96,9 +96,7 @@
   </style>
 </head>
 <body>
-  <div class="header">
-    <!-- You can place your logo or user id here if needed! -->
-  </div>
+  <div class="header"></div>
 
   <div class="sections">
     <div class="invite-section">
@@ -141,33 +139,39 @@
   </div>
 
 <script>
-  // Generate unique referral code for each user
   let userRefCode = localStorage.getItem("userRefCode");
   if (!userRefCode) {
     userRefCode = "ref_" + Math.random().toString(36).substring(2, 10);
     localStorage.setItem("userRefCode", userRefCode);
   }
-  // Use your actual public invite-friends.html URL below:
+
   const referralBase = "https://imrankohati069.github.io/Dot-network/invite-friends.html";
   const referralUrl = `${referralBase}?ref=${userRefCode}`;
 
   function shareWhatsApp() {
-    const message = `🚀 Join Chain65 and earn rewards!\n${referralUrl}`;
-    alert("WhatsApp sharing not available in browser, use copy link.");
+    const message = encodeURIComponent(`🚀 Join Chain65 and earn rewards!\n${referralUrl}`);
+    const url = `whatsapp://send?text=${message}`;
+    window.location.href = url;
   }
+
   function shareTelegram() {
-    const message = `🚀 Join Chain65 and earn rewards!\n${referralUrl}`;
-    alert("Telegram sharing not available in browser, use copy link.");
+    const message = encodeURIComponent(`🚀 Join Chain65 and earn rewards!\n${referralUrl}`);
+    const url = `tg://msg?text=${message}`;
+    window.location.href = url;
   }
+
   function shareFacebook() {
-    const message = `🚀 Join Chain65 and earn rewards!\n${referralUrl}`;
-    alert("Facebook sharing not available in browser, use copy link.");
+    const message = encodeURIComponent(`🚀 Join Chain65 and earn rewards!\n${referralUrl}`);
+    const url = `fb://facewebmodal/f?href=https://www.facebook.com/sharer/sharer.php?u=${referralUrl}&quote=${message}`;
+    window.location.href = url;
   }
+
   function copyReferralLink() {
     navigator.clipboard.writeText(referralUrl)
       .then(() => showPopup())
-      .catch(() => alert('Failed to copy link. Try manually.'));
+      .catch(() => console.log('Copy failed'));
   }
+
   function showPopup() {
     const popup = document.getElementById("popup");
     popup.style.display = "block";
@@ -178,23 +182,19 @@
     const urlParams = new URLSearchParams(window.location.search);
     const ref = urlParams.get("ref");
 
-    // If new user comes via referral, give them token, and increase referrer's count (local only).
     if (ref && ref !== userRefCode && !localStorage.getItem("refClaimed_" + ref)) {
-      // Add 1 token to referred user
       let currentTokens = parseFloat(localStorage.getItem("coinBalance")) || 0;
       currentTokens += 1;
       localStorage.setItem("coinBalance", currentTokens);
 
-      // Increment referrer's referral count (locally)
       let refCount = parseInt(localStorage.getItem("referral_count_" + ref)) || 0;
       refCount += 1;
       localStorage.setItem("referral_count_" + ref, refCount);
 
       localStorage.setItem("refClaimed_" + ref, "true");
-      alert("🎉 You received 1 bonus token from referral! Reward added to your home page tokens.");
+      showPopup();
     }
 
-    // Show your own invites (referral count for YOUR code)
     let myReferralCount = parseInt(localStorage.getItem("referral_count_" + userRefCode)) || 0;
     document.getElementById("refCount").innerText = myReferralCount;
   });
